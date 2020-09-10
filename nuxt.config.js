@@ -37,7 +37,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    { src: '@/plugins/draggable'} 
+    { src: '@/plugins/vuedraggable'} 
   ],
   /*
   ** Auto import components
