@@ -8,7 +8,7 @@
     </v-card-text>
     <v-card-actions>
         <v-spacer />
-      <v-btn color="red" dark>
+      <v-btn color="red" dark @click="deleteTimebox">
         Delete
       </v-btn>
     </v-card-actions>
@@ -27,6 +27,11 @@ export default {
         },
         duration: {
             required: true,
+        }
+    },
+    methods: {
+        deleteTimebox() {
+            this.$store.commit("timebox/DELETE_TIMEBOX", this.id);
         }
     }
 };

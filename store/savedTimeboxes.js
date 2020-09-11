@@ -31,9 +31,9 @@ export const mutations = {
     state.savedTimeboxLists.push(value);
   },
   DELETE_TIMEBOX_LIST(state, value) {
-    state.savedTimeboxLists = state.savedTimeboxLists.filter(lists => {
-      lists.name != value;
-    });
+    state.savedTimeboxLists = state.savedTimeboxLists.filter(
+      lists => lists.name != value
+    );
   },
   UPDATE_TIMEBOX_LIST(state, value) {
     let index = state.savedTimeboxLists.findIndex(

@@ -37,9 +37,7 @@ export const mutations = {
     state.timeboxList = value;
   },
   DELETE_TIMEBOX(state, value) {
-    state.timeboxList = state.timeboxList.filter(box => {
-      box.id != value;
-    });
+    state.timeboxList = state.timeboxList.filter(box => box.id != value);
   },
   ADD_TIMEBOX(state, value) {
     state.timeboxList.push(value);
