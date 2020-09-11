@@ -3,7 +3,7 @@
     <p class="text-h3">
       Simple Timeboxer
     </p>
-    <draggable v-model="timeboxList" animation="200" ghost-class="ghost">
+    <draggable v-model="timeboxList" animation="200" ghost-class="ghost" handle=".handle">
       <transition-group>
         <timebox-card
           class="ma-2"

@@ -1,5 +1,8 @@
 <template>
   <v-card class="mx-auto" width="344">
+      <div class="handle">
+        <v-icon>mdi-drag</v-icon>
+      </div>
     <v-card-title>
       {{name}}
     </v-card-title>
@@ -8,8 +11,8 @@
     </v-card-text>
     <v-card-actions>
         <v-spacer />
-      <v-btn color="red" dark @click="deleteTimebox">
-        Delete
+      <v-btn icon color="red" @click="deleteTimebox">
+        <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -37,4 +40,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+</style>
