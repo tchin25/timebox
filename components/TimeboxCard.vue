@@ -1,17 +1,21 @@
 <template>
   <v-card class="mx-auto" width="344">
-      <div class="handle">
-        <v-icon>mdi-drag</v-icon>
-      </div>
+    <div class="handle">
+      <v-icon>mdi-drag</v-icon>
+    </div>
     <v-card-title>
-      {{name}}
+      {{ name }}
     </v-card-title>
     <v-card-text>
       Text
     </v-card-text>
     <v-card-actions>
-        <v-spacer />
-      <v-btn icon color="red" @click="deleteTimebox">
+      <v-spacer />
+      <v-btn icon :disabled="active">
+        
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+      <v-btn icon color="red" @click="DELETE_TIMEBOX(id)">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-card-actions>
@@ -19,31 +23,37 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
-    props: {
-        id: {
-            required: true,
-        },
-        name: {
-            required: true,
-            default: "Title"
-        },
-        duration: {
-            required: true,
-        }
+  props: {
+    id: {
+      required: true
     },
-    methods: {
-        deleteTimebox() {
-            this.$store.commit("timebox/DELETE_TIMEBOX", this.id);
-        }
+    name: {
+      required: true,
+      default: "Title"
+    },
+    duration: {
+      required: true
     }
+  },
+  data() {
+    return {
+      active: false,
+      editing: false
+    };
+  },
+  methods: {
+    ...mapMutations("timebox", ["UPDATE_TIMEBOX", "DELETE_TIMEBOX"])
+  }
 };
 </script>
 
 <style>
 .handle {
-    position: absolute;
-    top: 0;
-    right: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>

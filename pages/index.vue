@@ -3,10 +3,16 @@
     <p class="text-h3">
       Simple Timeboxer
     </p>
-    <draggable v-model="timeboxList" animation="200" ghost-class="ghost" handle=".handle">
-      <transition-group>
+    <draggable
+      v-model="timeboxList"
+      animation="200"
+      ghost-class="ghost"
+      handle=".handle"
+      style="position: relative; width: 344px;"
+    >
+      <transition-group type="transition" name="timeboxList">
         <timebox-card
-          class="ma-2"
+          class="ma-2 timeboxList-item"
           v-for="element in timeboxList"
           :key="element.id"
           v-bind="element"
@@ -39,5 +45,16 @@ export default {
 .ghost {
   opacity: 0.5;
   background: #c8ebfb;
+}
+
+.timeboxList-item {
+  transition: all 0.75s;
+}
+.timeboxList-enter,
+.timeboxList-leave-to {
+  opacity: 0;
+}
+.timeboxList-leave-active {
+  position: absolute;
 }
 </style>
