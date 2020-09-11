@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="344">
+  <v-card class="mx-auto" width="344">
     <v-card-title>
       {{name}}
     </v-card-title>
@@ -7,6 +7,7 @@
       Text
     </v-card-text>
     <v-card-actions>
+        <v-spacer />
       <v-btn color="red" dark>
         Delete
       </v-btn>

@@ -4,7 +4,7 @@
       Simple Timeboxer
     </p>
     <draggable v-model="timeboxList">
-      <timebox-card v-for="element in timeboxList" :key="element.id" v-bind="element">
+      <timebox-card class="ma-2" v-for="element in timeboxList" :key="element.id" v-bind="element">
       </timebox-card>
     </draggable>
   </div>
