@@ -27,23 +27,36 @@ export const state = () => ({
 });
 
 export const mutations = {
-  ADD_TIMEBOX_LIST(state, value) {
-    state.savedTimeboxLists.push(value);
+  ADD_TIMEBOX_LIST(state, timeboxList) {
+    state.savedTimeboxLists.push(timeboxList);
   },
-  DELETE_TIMEBOX_LIST(state, value) {
+  DELETE_TIMEBOX_LIST(state, name) {
     state.savedTimeboxLists = state.savedTimeboxLists.filter(
-      lists => lists.name != value
+      lists => lists.name != name
     );
   },
-  UPDATE_TIMEBOX_LIST(state, value) {
+  UPDATE_TIMEBOX_LIST(state, timeboxList) {
     let index = state.savedTimeboxLists.findIndex(
-      list => list.name == value.name
+      list => list.name == timeboxList.name
     );
     if (index == -1) {
       return;
     }
-    state.savedTimeboxLists[index] = value;
+    state.savedTimeboxLists[index] = timeboxList;
   }
 };
 
-export const actions = {};
+export const actions = {
+    retrieveSavedTimeboxLists({commit}){
+
+    },
+    updateSavedTimeboxList({state, commit}, timeboxList){
+
+    },
+    deleteSavedTimeboxList({state, commit}, name){
+
+    },
+    addSavedTimedTimeboxList({state, commit}, timeboxList){
+
+    }
+};
