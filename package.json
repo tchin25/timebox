@@ -11,7 +11,8 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "nuxt": "^2.14.0",
-    "vuedraggable": "^2.24.1"
+    "vuedraggable": "^2.24.1",
+    "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2"

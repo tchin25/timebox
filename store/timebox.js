@@ -1,7 +1,6 @@
 export const state = () => ({
-  currentTimebox: 0,
-  remainingDuration: 0,
-  saved: false,
+  currentTimeboxId: 0,
+  currentTimeboxEndTime: 0,
   timeboxList: [
     {
       id: 0,
