@@ -19,9 +19,11 @@
             v-bind="element"
           >
           </timebox-card>
+          <add-timebox-card key="footer" class="timeboxList-item"></add-timebox-card>
         </transition-group>
+              
       </draggable>
-      <add-timebox-card></add-timebox-card>
+
     </div>
   </div>
 </template>

@@ -4,17 +4,45 @@
       <v-icon>mdi-drag</v-icon>
     </div>
     <v-card-title>
-      {{ name }}
+      {{ title }}
     </v-card-title>
     <v-card-text>
       Text
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn icon :disabled="active">
+      <v-btn
+        icon
+        v-if="!active && editing"
+        color="green"
+        @click="updateTimebox"
+      >
+        <v-icon>mdi-content-save</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        v-else
+        :disabled="active"
+        color="blue"
+        @click="editing = true"
+      >
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-btn icon color="red" @click="DELETE_TIMEBOX(id)">
+      <v-btn
+        icon
+        v-if="!active && editing"
+        color="red"
+        @click="editing = false"
+      >
+        <v-icon>mdi-undo-variant</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        v-else
+        :disabled="active"
+        color="red"
+        @click="DELETE_TIMEBOX(id)"
+      >
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-card-actions>
@@ -22,6 +50,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapState, mapMutations } from "vuex";
 
 export default {
@@ -29,7 +58,7 @@ export default {
     id: {
       required: true
     },
-    name: {
+    title: {
       required: true,
       default: "Title"
     },
@@ -39,17 +68,43 @@ export default {
   },
   data() {
     return {
-      editing: false
+      editing: false,
+      remainingTime: 0,
+      timerInterval: null
     };
   },
   methods: {
+    updateTimebox() {
+      this.editing = false;
+    },
     ...mapMutations("timebox", ["UPDATE_TIMEBOX", "DELETE_TIMEBOX"])
   },
   computed: {
     active() {
       return this.currentTimeboxId == this.id;
     },
-    ...mapState("timebox", ["currentTimeboxId"])
+    ...mapState("timebox", ["currentTimeboxId", "status"])
+  },
+  watch: {
+    active: function(newVal, oldVal) {
+      if (newVal == true) {
+        this.editing = false;
+      }
+    },
+    currentTimeboxId: {
+      handler: function(newVal, oldVal) {
+        if (newVal == this.id) {
+          this.remainingTime = this.duration;
+          if (this.status == "START") {
+            this.timerInterval = setInterval(
+              () => (this.remainingTime -= 1),
+              1000
+            );
+          }
+        }
+      },
+      immediate: true
+    }
   }
 };
 </script>

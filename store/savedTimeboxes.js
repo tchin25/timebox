@@ -5,7 +5,7 @@ export const state = () => ({
       timeboxList: [
         {
           id: 0,
-          name: "Test name 1",
+          title: "Test name 1",
           duration: 3600,
           advance: {
             alternate: 0,
@@ -14,7 +14,7 @@ export const state = () => ({
         },
         {
           id: 1,
-          name: "Test name 2",
+          title: "Test name 2",
           duration: 1800,
           advance: {
             alternate: 0,

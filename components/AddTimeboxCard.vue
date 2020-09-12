@@ -22,14 +22,14 @@ export default {
     addCard() {
       let toAdd = {
         id: 0,
-        name: "Test name 1",
+        title: "Test name 1",
         duration: 3600,
         advance: {
           alternate: 0,
           offset: 0
         }
       };
-      //this.ADD_TIMEBOX();
+      this.ADD_TIMEBOX(toAdd);
     },
     ...mapMutations("timebox", ["ADD_TIMEBOX"])
   }
