@@ -7,7 +7,7 @@
       {{ title }}
     </v-card-title>
     <v-card-text>
-      {{remainingTime}}
+      {{ remainingTime }}
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -51,7 +51,7 @@
 
 <script>
 import moment from "moment";
-import statusEnum from "../assets/status"
+import statusEnum from "../assets/status";
 import { mapState, mapMutations } from "vuex";
 
 export default {
@@ -74,11 +74,18 @@ export default {
       timerInterval: null
     };
   },
+  mounted() {
+    this.remainingTime = this.duration;
+  },
   methods: {
     updateTimebox() {
       this.editing = false;
     },
-    ...mapMutations("timebox", ["UPDATE_TIMEBOX", "DELETE_TIMEBOX", "NEXT_TIMEBOX"])
+    ...mapMutations("timebox", [
+      "UPDATE_TIMEBOX",
+      "DELETE_TIMEBOX",
+      "NEXT_TIMEBOX"
+    ])
   },
   computed: {
     active() {
@@ -87,27 +94,51 @@ export default {
     ...mapState("timebox", ["currentTimeboxId", "status"])
   },
   watch: {
-    active: function(newVal, oldVal) {
-      if (newVal == true) {
+    active: function(newVal) {
+      if (newVal === true) {
         this.editing = false;
+      }
+    },
+    status: function(newVal) {
+      if (this.currentTimeboxId !== this.id) {
+        return;
+      }
+
+      switch (newVal) {
+        case statusEnum.START:
+          this.timerInterval = setInterval(
+            () => (this.remainingTime -= 1),
+            1000
+          );
+          break;
+        case statusEnum.PAUSED:
+          clearInterval(this.timerInterval);
+          break;
+        case statusEnum.STOPPED:
+          clearInterval(this.timerInterval);
+          this.remainingTime = this.duration;
+          // Reset timeboxlist method
+          break;
       }
     },
     currentTimeboxId: {
       handler: function(newVal) {
-        if (newVal === this.id) {
+        if (newVal !== this.id) {
+          return;
+        }
+
+        if (this.status === statusEnum.START) {
           this.remainingTime = this.duration;
-          if (this.status === statusEnum.START) {
-            this.timerInterval = setInterval(
-              () => (this.remainingTime -= 1),
-              1000
-            );
-          }
+          this.timerInterval = setInterval(
+            () => (this.remainingTime -= 1),
+            1000
+          );
         }
       },
       immediate: true
     },
-    remainingTime: function(newVal){
-      if (newVal === 0){
+    remainingTime: function(newVal) {
+      if (newVal <= 0) {
         clearInterval(this.timerInterval);
         this.NEXT_TIMEBOX();
       }

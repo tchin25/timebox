@@ -1,14 +1,14 @@
 import statusEnum from "../assets/status"
 
 export const state = () => ({
-  currentTimeboxId: 1,
+  currentTimeboxId: 0,
   status: statusEnum.STOPPED,
   repeat: true,
   timeboxList: [
     {
       id: 0,
       title: "Test name 1",
-      duration: 3600,
+      duration: 10,
       advance: {
         alternate: 0,
         offset: 0
@@ -17,7 +17,7 @@ export const state = () => ({
     {
       id: 1,
       title: "Test name 2",
-      duration: 1800,
+      duration: 10,
       advance: {
         alternate: 0,
         offset: 0
@@ -26,7 +26,7 @@ export const state = () => ({
     {
       id: 2,
       title: "Test name 3",
-      duration: 7200,
+      duration: 10,
       advance: {
         alternate: 0,
         offset: 0
@@ -56,7 +56,7 @@ export const mutations = {
     state.currentTimeboxId = id;
   },
   NEXT_TIMEBOX(state) {
-    let index = state.timeboxList.findIndex(box => box.id == timebox.id);
+    let index = state.timeboxList.findIndex(box => box.id == state.currentTimeboxId);
     if (
       index == -1 ||
       (index == state.timeboxList.length - 1 && repeat == false)
