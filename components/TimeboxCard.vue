@@ -12,7 +12,6 @@
     <v-card-actions>
       <v-spacer />
       <v-btn icon :disabled="active">
-        
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
       <v-btn icon color="red" @click="DELETE_TIMEBOX(id)">
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   props: {
@@ -40,12 +39,17 @@ export default {
   },
   data() {
     return {
-      active: false,
       editing: false
     };
   },
   methods: {
     ...mapMutations("timebox", ["UPDATE_TIMEBOX", "DELETE_TIMEBOX"])
+  },
+  computed: {
+    active() {
+      return this.currentTimeboxId == this.id;
+    },
+    ...mapState("timebox", ["currentTimeboxId"])
   }
 };
 </script>

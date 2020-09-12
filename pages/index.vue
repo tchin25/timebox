@@ -19,25 +19,20 @@
             v-bind="element"
           >
           </timebox-card>
-          <!-- <v-btn key="footer" icon color="green" slot="footer">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn> -->
         </transition-group>
       </draggable>
-      <div>
-        <v-btn icon color="green">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </div>
+      <add-timebox-card></add-timebox-card>
     </div>
   </div>
 </template>
 
 <script>
 import TimeboxCard from "../components/TimeboxCard";
+import AddTimeboxCard from "../components/AddTimeboxCard";
 export default {
   components: {
-    TimeboxCard
+    TimeboxCard,
+    AddTimeboxCard
   },
   computed: {
     timeboxList: {
