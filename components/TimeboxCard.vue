@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" width="344">
+  <v-card class="mx-auto" width="100%">
     <div class="handle">
       <v-icon>mdi-drag</v-icon>
     </div>

@@ -33,21 +33,24 @@ export const state = () => ({
 });
 
 export const mutations = {
-  SET_TIMEBOX_LIST(state, value) {
-    state.timeboxList = value;
+  SET_TIMEBOX_LIST(state, timeboxList) {
+    state.timeboxList = timeboxList;
   },
-  DELETE_TIMEBOX(state, value) {
-    state.timeboxList = state.timeboxList.filter(box => box.id != value);
+  DELETE_TIMEBOX(state, id) {
+    state.timeboxList = state.timeboxList.filter(box => box.id != id);
   },
-  ADD_TIMEBOX(state, value) {
-    state.timeboxList.push(value);
+  ADD_TIMEBOX(state, timebox) {
+    state.timeboxList.push(timebox);
   },
-  UPDATE_TIMEBOX(state, value) {
-    let index = state.timeboxList.findIndex(box => box.id == value.id);
+  UPDATE_TIMEBOX(state, timebox) {
+    let index = state.timeboxList.findIndex(box => box.id == timebox.id);
     if (index == -1) {
       return;
     }
-    state.timeboxList[index] = value;
+    state.timeboxList[index] = timebox;
+  },
+  SET_CURRENT_TIMEBOX(state, id){
+      state.currentTimeboxId = id;
   }
 };
 
