@@ -7,7 +7,7 @@
       {{ title }}
     </v-card-title>
     <v-card-text>
-      Text
+      {{remainingTime}}
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -77,11 +77,11 @@ export default {
     updateTimebox() {
       this.editing = false;
     },
-    ...mapMutations("timebox", ["UPDATE_TIMEBOX", "DELETE_TIMEBOX"])
+    ...mapMutations("timebox", ["UPDATE_TIMEBOX", "DELETE_TIMEBOX", "NEXT_TIMEBOX"])
   },
   computed: {
     active() {
-      return this.currentTimeboxId == this.id;
+      return this.currentTimeboxId === this.id;
     },
     ...mapState("timebox", ["currentTimeboxId", "status"])
   },
@@ -92,10 +92,10 @@ export default {
       }
     },
     currentTimeboxId: {
-      handler: function(newVal, oldVal) {
-        if (newVal == this.id) {
+      handler: function(newVal) {
+        if (newVal === this.id) {
           this.remainingTime = this.duration;
-          if (this.status == "START") {
+          if (this.status === "START") {
             this.timerInterval = setInterval(
               () => (this.remainingTime -= 1),
               1000
@@ -104,6 +104,12 @@ export default {
         }
       },
       immediate: true
+    },
+    remainingTime: function(newVal){
+      if (newVal === 0){
+        clearInterval(this.timerInterval);
+        this.NEXT_TIMEBOX();
+      }
     }
   }
 };

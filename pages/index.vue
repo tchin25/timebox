@@ -6,6 +6,7 @@
     <div style="position: relative; width: 344px;">
       <draggable
         v-model="timeboxList"
+        :move="onMoveCallback"
         animation="500"
         ghost-class="ghost"
         handle=".handle"
@@ -19,11 +20,12 @@
             v-bind="element"
           >
           </timebox-card>
-          <add-timebox-card key="footer" class="timeboxList-item"></add-timebox-card>
+          <add-timebox-card
+            key="footer"
+            class="timeboxList-item"
+          ></add-timebox-card>
         </transition-group>
-              
       </draggable>
-
     </div>
   </div>
 </template>
@@ -35,6 +37,12 @@ export default {
   components: {
     TimeboxCard,
     AddTimeboxCard
+  },
+  methods: {
+    onMoveCallback(evt, originalEvent) {
+      console.log(evt);
+      // return false; — for cancel
+    }
   },
   computed: {
     timeboxList: {

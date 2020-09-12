@@ -1,6 +1,7 @@
 export const state = () => ({
   currentTimeboxId: 1,
-  status: "STOP",
+  status: "STOPPED",
+  repeat: true,
   timeboxList: [
     {
       id: 0,
@@ -49,8 +50,22 @@ export const mutations = {
     }
     state.timeboxList[index] = timebox;
   },
-  SET_CURRENT_TIMEBOX(state, id){
-      state.currentTimeboxId = id;
+  SET_CURRENT_TIMEBOX(state, id) {
+    state.currentTimeboxId = id;
+  },
+  NEXT_TIMEBOX(state) {
+    let index = state.timeboxList.findIndex(box => box.id == timebox.id);
+    if (
+      index == -1 ||
+      (index == state.timeboxList.length - 1 && repeat == false)
+    ) {
+      state.currentTimeboxId = state.timeboxList[0].id;
+      state.status = "STOPPED";
+    } else if (index == state.timeboxList.length - 1 && repeat == true) {
+      state.currentTimeboxId = state.timeboxList[0].id;
+    } else {
+      state.currentTimeboxId = state.timeboxList[index + 1].id;
+    }
   }
 };
 
