@@ -1,6 +1,8 @@
+import statusEnum from "../assets/status"
+
 export const state = () => ({
   currentTimeboxId: 1,
-  status: "STOPPED",
+  status: statusEnum.STOPPED,
   repeat: true,
   timeboxList: [
     {
@@ -60,7 +62,7 @@ export const mutations = {
       (index == state.timeboxList.length - 1 && repeat == false)
     ) {
       state.currentTimeboxId = state.timeboxList[0].id;
-      state.status = "STOPPED";
+      state.status = statusEnum.STOPPED;
     } else if (index == state.timeboxList.length - 1 && repeat == true) {
       state.currentTimeboxId = state.timeboxList[0].id;
     } else {

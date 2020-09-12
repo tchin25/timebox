@@ -51,6 +51,7 @@
 
 <script>
 import moment from "moment";
+import statusEnum from "../assets/status"
 import { mapState, mapMutations } from "vuex";
 
 export default {
@@ -95,7 +96,7 @@ export default {
       handler: function(newVal) {
         if (newVal === this.id) {
           this.remainingTime = this.duration;
-          if (this.status === "START") {
+          if (this.status === statusEnum.START) {
             this.timerInterval = setInterval(
               () => (this.remainingTime -= 1),
               1000
