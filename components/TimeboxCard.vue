@@ -8,7 +8,12 @@
       {{ title }}
     </v-card-title>
     <v-card-text>
-      {{ remainingTime }}
+      <span class="text-h4">{{
+        moment.duration(remainingTime, "seconds").format()
+      }}</span>
+      <span class="text-h6"
+        >/{{ moment.duration(duration, "seconds").format() }}</span
+      >
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -52,6 +57,7 @@
 
 <script>
 import moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
 import statusEnum from "../assets/status";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
@@ -72,7 +78,8 @@ export default {
     return {
       editing: false,
       remainingTime: 0,
-      timerInterval: null
+      timerInterval: null,
+      moment
     };
   },
   mounted() {
@@ -96,7 +103,7 @@ export default {
       return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
     },
     isCompleted() {
-      if (this.active){
+      if (this.active) {
         return null;
       }
       return this.getTimeboxIndexById(this.id) <
