@@ -35,6 +35,12 @@ export const state = () => ({
   ]
 });
 
+export const getters = {
+  getTimeboxIndexById: (state) => (id) => {
+    return state.timeboxList.findIndex(box => box.id == id);
+  }
+}
+
 export const mutations = {
   SET_TIMEBOX_LIST(state, timeboxList) {
     state.timeboxList = timeboxList;
@@ -45,30 +51,37 @@ export const mutations = {
   ADD_TIMEBOX(state, timebox) {
     state.timeboxList.push(timebox);
   },
-  UPDATE_TIMEBOX(state, timebox) {
-    let index = state.timeboxList.findIndex(box => box.id == timebox.id);
-    if (index == -1) {
+  UPDATE_TIMEBOX(state, timeboxIndex) {
+    if (timeboxIndex == -1) {
       return;
     }
-    state.timeboxList[index] = timebox;
+    state.timeboxList[timeboxIndex] = timebox;
   },
   SET_CURRENT_TIMEBOX(state, id) {
     state.currentTimeboxId = id;
   },
-  NEXT_TIMEBOX(state) {
-    let index = state.timeboxList.findIndex(box => box.id == state.currentTimeboxId);
+  _NEXT_TIMEBOX(state, timeboxIndex) {
     if (
-      index == -1 ||
-      (index == state.timeboxList.length - 1 && state.repeat == false)
+      timeboxIndex == -1 ||
+      (timeboxIndex == state.timeboxList.length - 1 && state.repeat == false)
     ) {
       state.currentTimeboxId = -1;
       state.status = statusEnum.STOPPED;
-    } else if (index == state.timeboxList.length - 1 && state.repeat == true) {
+    } else if (timeboxIndex == state.timeboxList.length - 1 && state.repeat == true) {
       state.currentTimeboxId = -1;
     } else {
-      state.currentTimeboxId = state.timeboxList[index + 1].id;
+      state.currentTimeboxId = state.timeboxList[timeboxIndex + 1].id;
     }
   }
 };
 
-export const actions = {};
+export const actions = {
+  updateTimebox({commit, getters}, timeboxId){
+    let index = getters.getTimeboxIndexById(timeboxId);
+    commit("UPDATE_TIMEBOX", index);
+  },
+  nextTimebox({state, commit, getters}){
+    let index = getters.getTimeboxIndexById(state.currentTimeboxId);
+    commit("_NEXT_TIMEBOX", index);
+  }
+};

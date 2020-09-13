@@ -1,5 +1,6 @@
 <template>
   <v-card class="mx-auto" width="100%">
+    <div class="timebox-background" :style="backgroundHeight"></div>
     <div class="handle">
       <v-icon>mdi-drag</v-icon>
     </div>
@@ -52,7 +53,7 @@
 <script>
 import moment from "moment";
 import statusEnum from "../assets/status";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   props: {
@@ -81,22 +82,45 @@ export default {
     updateTimebox() {
       this.editing = false;
     },
-    ...mapMutations("timebox", [
-      "UPDATE_TIMEBOX",
-      "DELETE_TIMEBOX",
-      "NEXT_TIMEBOX"
-    ])
+    ...mapMutations("timebox", ["DELETE_TIMEBOX"]),
+    ...mapActions("timebox", ["updateTimebox", "nextTimebox"])
   },
   computed: {
     active() {
       return this.currentTimeboxId === this.id;
     },
-    ...mapState("timebox", ["currentTimeboxId", "status"])
+    backgroundHeight() {
+      if (!this.active) {
+        return this.isCompleted ? "height: 100%;" : "height: 0%;";
+      }
+      return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
+    },
+    isCompleted() {
+      if (this.active){
+        return null;
+      }
+      return this.getTimeboxIndexById(this.id) <
+        this.getTimeboxIndexById(this.currentTimeboxId)
+        ? true
+        : false;
+    },
+    ...mapState("timebox", ["currentTimeboxId", "status"]),
+    ...mapGetters("timebox", ["getTimeboxIndexById"])
   },
   watch: {
     active: function(newVal) {
       if (newVal === true) {
         this.editing = false;
+      }
+    },
+    isCompleted: function(newVal) {
+      if (this.active) {
+        return;
+      }
+      if (newVal === false) {
+        this.remainingTime = this.duration;
+      } else {
+        this.remainingTime = 0;
       }
     },
     status: function(newVal) {
@@ -138,9 +162,9 @@ export default {
       immediate: true
     },
     remainingTime: function(newVal) {
-      if (newVal <= 0) {
+      if (newVal <= 0 && this.timerInterval) {
         clearInterval(this.timerInterval);
-        this.NEXT_TIMEBOX();
+        this.nextTimebox();
       }
     }
   }
@@ -152,5 +176,16 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.timebox-background {
+  transition: height 1s linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 </style>

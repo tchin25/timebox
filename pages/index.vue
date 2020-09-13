@@ -20,7 +20,7 @@
           }
         }"
       >
-        <status-buttons key="header" slot="header"></status-buttons>
+        <!-- <status-buttons key="header" slot="header"></status-buttons> -->
         <timebox-card
           class="ma-2 timeboxList-item"
           v-for="element in timeboxList"
