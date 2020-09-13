@@ -9,32 +9,38 @@
         :move="onMoveCallback"
         animation="500"
         ghost-class="ghost"
+        draggable=".timeboxList-item"
         handle=".handle"
         filter=".ignore"
+        tag="transition-group"
+        :componentData="{
+          props: {
+            type: 'transition',
+            name: 'timeboxList'
+          }
+        }"
       >
-        <transition-group type="transition" name="timeboxList">
-          <timebox-card
-            class="ma-2 timeboxList-item"
-            v-for="element in timeboxList"
-            :key="element.id"
-            v-bind="element"
-          >
-          </timebox-card>
-          <add-timebox-card
-            key="footer"
-            class="timeboxList-item"
-          ></add-timebox-card>
-        </transition-group>
+        <status-buttons key="header" slot="header"></status-buttons>
+        <timebox-card
+          class="ma-2 timeboxList-item"
+          v-for="element in timeboxList"
+          :key="element.id"
+          v-bind="element"
+        >
+        </timebox-card>
+        <add-timebox-card key="footer" slot="footer"></add-timebox-card>
       </draggable>
     </div>
   </div>
 </template>
 
 <script>
+import StatusButtons from "../components/StatusButtons";
 import TimeboxCard from "../components/TimeboxCard";
 import AddTimeboxCard from "../components/AddTimeboxCard";
 export default {
   components: {
+    StatusButtons,
     TimeboxCard,
     AddTimeboxCard
   },

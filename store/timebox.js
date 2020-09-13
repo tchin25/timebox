@@ -59,12 +59,12 @@ export const mutations = {
     let index = state.timeboxList.findIndex(box => box.id == state.currentTimeboxId);
     if (
       index == -1 ||
-      (index == state.timeboxList.length - 1 && repeat == false)
+      (index == state.timeboxList.length - 1 && state.repeat == false)
     ) {
-      state.currentTimeboxId = state.timeboxList[0].id;
+      state.currentTimeboxId = -1;
       state.status = statusEnum.STOPPED;
-    } else if (index == state.timeboxList.length - 1 && repeat == true) {
-      state.currentTimeboxId = state.timeboxList[0].id;
+    } else if (index == state.timeboxList.length - 1 && state.repeat == true) {
+      state.currentTimeboxId = -1;
     } else {
       state.currentTimeboxId = state.timeboxList[index + 1].id;
     }
