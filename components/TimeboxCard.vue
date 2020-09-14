@@ -9,12 +9,8 @@
     </v-card-title>
     <v-card-text>
       <div v-if="!editing">
-        <span class="text-h4">{{
-          moment.duration(remainingTime, "seconds").format()
-        }}</span>
-        <span class="text-h6"
-          >/{{ moment.duration(duration, "seconds").format() }}</span
-        >
+        <span class="text-h4">{{ formattedRemainingTime }}</span>
+        <span class="text-h6">/{{ formattedDuration }}</span>
       </div>
       <div v-else>
         <duration-picker v-model="form.duration"></duration-picker>
@@ -22,12 +18,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        icon
-        v-if="!active && editing"
-        color="green"
-        @click="updateTimebox"
-      >
+      <v-btn icon v-if="!active && editing" color="green" @click="saveTimebox">
         <v-icon>mdi-content-save</v-icon>
       </v-btn>
       <v-btn
@@ -88,7 +79,6 @@ export default {
       editing: false,
       remainingTime: 0,
       timerInterval: null,
-      moment,
       form: {
         title: this.title,
         duration: this.duration
@@ -99,7 +89,12 @@ export default {
     this.remainingTime = this.duration;
   },
   methods: {
-    updateTimebox() {
+    saveTimebox() {
+      let timebox = {
+        id: this.id,
+        ...this.form
+      };
+      this.updateTimebox(timebox);
       this.editing = false;
     },
     ...mapMutations("timebox", ["DELETE_TIMEBOX"]),
@@ -123,6 +118,12 @@ export default {
         this.getTimeboxIndexById(this.currentTimeboxId)
         ? true
         : false;
+    },
+    formattedRemainingTime() {
+      return moment.duration(this.remainingTime, "seconds").format();
+    },
+    formattedDuration() {
+      return moment.duration(this.duration, "seconds").format();
     },
     ...mapState("timebox", ["currentTimeboxId", "status"]),
     ...mapGetters("timebox", ["getTimeboxIndexById"])
