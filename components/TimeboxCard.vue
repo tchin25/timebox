@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" width="100%">
+  <v-card class="mx-auto" :flat="isCompleted" width="100%">
     <div class="timebox-background" :style="backgroundHeight"></div>
     <div class="handle">
       <v-icon>mdi-drag</v-icon>
@@ -95,6 +95,9 @@ export default {
         ...this.form
       };
       this.updateTimebox(timebox);
+      if (!this.active){
+        this.remainingTime = this.form.duration;
+      }
       this.editing = false;
     },
     ...mapMutations("timebox", ["DELETE_TIMEBOX"]),
@@ -120,10 +123,10 @@ export default {
         : false;
     },
     formattedRemainingTime() {
-      return moment.duration(this.remainingTime, "seconds").format();
+      return moment.duration(this.remainingTime, "seconds").format("hh:mm:ss", { trim: "large mid" });
     },
     formattedDuration() {
-      return moment.duration(this.duration, "seconds").format();
+      return moment.duration(this.duration, "seconds").format("hh[h]:mm[m]:ss[s]", { trim: "large mid" });
     },
     ...mapState("timebox", ["currentTimeboxId", "status"]),
     ...mapGetters("timebox", ["getTimeboxIndexById"])

@@ -68,7 +68,7 @@ export const mutations = {
       state.currentTimeboxId = -1;
       state.status = statusEnum.STOPPED;
     } else if (timeboxIndex == state.timeboxList.length - 1 && state.repeat == true) {
-      state.currentTimeboxId = -1;
+      state.currentTimeboxId = 0;
     } else {
       state.currentTimeboxId = state.timeboxList[timeboxIndex + 1].id;
     }
