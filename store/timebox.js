@@ -1,4 +1,4 @@
-import statusEnum from "../assets/status"
+import { statusEnum } from "../assets/enums";
 
 export const state = () => ({
   currentTimeboxId: 0,
@@ -36,10 +36,10 @@ export const state = () => ({
 });
 
 export const getters = {
-  getTimeboxIndexById: (state) => (id) => {
+  getTimeboxIndexById: state => id => {
     return state.timeboxList.findIndex(box => box.id == id);
   }
-}
+};
 
 export const mutations = {
   SET_TIMEBOX_LIST(state, timeboxList) {
@@ -51,7 +51,7 @@ export const mutations = {
   ADD_TIMEBOX(state, timebox) {
     state.timeboxList.push(timebox);
   },
-  UPDATE_TIMEBOX(state, {index, timebox}) {
+  UPDATE_TIMEBOX(state, { index, timebox }) {
     if (index == -1) {
       return;
     }
@@ -67,7 +67,10 @@ export const mutations = {
     ) {
       state.currentTimeboxId = -1;
       state.status = statusEnum.STOPPED;
-    } else if (timeboxIndex == state.timeboxList.length - 1 && state.repeat == true) {
+    } else if (
+      timeboxIndex == state.timeboxList.length - 1 &&
+      state.repeat == true
+    ) {
       state.currentTimeboxId = state.timeboxList[0].id;
     } else {
       state.currentTimeboxId = state.timeboxList[timeboxIndex + 1].id;
@@ -76,11 +79,11 @@ export const mutations = {
 };
 
 export const actions = {
-  updateTimebox({commit, getters}, timebox){
+  updateTimebox({ commit, getters }, timebox) {
     let index = getters.getTimeboxIndexById(timebox.id);
-    commit("UPDATE_TIMEBOX", {index, timebox});
+    commit("UPDATE_TIMEBOX", { index, timebox });
   },
-  nextTimebox({state, commit, getters}){
+  nextTimebox({ state, commit, getters }) {
     let index = getters.getTimeboxIndexById(state.currentTimeboxId);
     commit("_NEXT_TIMEBOX", index);
   }

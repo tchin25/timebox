@@ -54,7 +54,7 @@
 <script>
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
-import statusEnum from "../assets/status";
+import { statusEnum } from "../assets/enums";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import DurationPicker from "./DurationPicker";
 
@@ -95,7 +95,7 @@ export default {
         ...this.form
       };
       this.updateTimebox(timebox);
-      if (!this.active){
+      if (!this.active) {
         this.remainingTime = this.form.duration;
       }
       this.editing = false;
@@ -123,10 +123,14 @@ export default {
         : false;
     },
     formattedRemainingTime() {
-      return moment.duration(this.remainingTime, "seconds").format("hh:mm:ss", { trim: "large mid" });
+      return moment
+        .duration(this.remainingTime, "seconds")
+        .format("hh:mm:ss", { trim: "large mid" });
     },
     formattedDuration() {
-      return moment.duration(this.duration, "seconds").format("hh[h]:mm[m]:ss[s]", { trim: "large mid" });
+      return moment
+        .duration(this.duration, "seconds")
+        .format("hh[h]:mm[m]:ss[s]", { trim: "large mid" });
     },
     ...mapState("timebox", ["currentTimeboxId", "status"]),
     ...mapGetters("timebox", ["getTimeboxIndexById"])
@@ -188,6 +192,7 @@ export default {
     remainingTime: function(newVal) {
       if (newVal <= 0 && this.timerInterval) {
         clearInterval(this.timerInterval);
+        this.timerInterval = null;
         this.nextTimebox();
       }
     }
