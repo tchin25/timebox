@@ -43,7 +43,7 @@ export const getters = {
 
 export const mutations = {
   SET_TIMEBOX_LIST(state, timeboxList) {
-    state.timeboxList = timeboxList;
+    state.timeboxList = timeboxList ? timeboxList : [];
   },
   DELETE_TIMEBOX(state, id) {
     state.timeboxList = state.timeboxList.filter(box => box.id != id);
@@ -52,7 +52,7 @@ export const mutations = {
     state.timeboxList.push(timebox);
   },
   UPDATE_TIMEBOX(state, { index, timebox }) {
-    if (index == -1) {
+    if (index == -1 || index >= state.timeboxList.length) {
       return;
     }
     state.timeboxList.splice(index, 1, timebox);
@@ -60,20 +60,20 @@ export const mutations = {
   SET_CURRENT_TIMEBOX(state, id) {
     state.currentTimeboxId = id;
   },
-  _NEXT_TIMEBOX(state, timeboxIndex) {
+  _NEXT_TIMEBOX(state, currentTimeboxIndex) {
     if (
-      timeboxIndex == -1 ||
-      (timeboxIndex == state.timeboxList.length - 1 && state.repeat == false)
+      currentTimeboxIndex == -1 ||
+      (currentTimeboxIndex == state.timeboxList.length - 1 && state.repeat == false)
     ) {
       state.currentTimeboxId = -1;
       state.status = statusEnum.STOPPED;
     } else if (
-      timeboxIndex == state.timeboxList.length - 1 &&
+      currentTimeboxIndex == state.timeboxList.length - 1 &&
       state.repeat == true
     ) {
       state.currentTimeboxId = state.timeboxList[0].id;
     } else {
-      state.currentTimeboxId = state.timeboxList[timeboxIndex + 1].id;
+      state.currentTimeboxId = state.timeboxList[currentTimeboxIndex + 1].id;
     }
   }
 };
