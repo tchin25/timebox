@@ -51,11 +51,11 @@ export const mutations = {
   ADD_TIMEBOX(state, timebox) {
     state.timeboxList.push(timebox);
   },
-  UPDATE_TIMEBOX(state, timeboxIndex) {
-    if (timeboxIndex == -1) {
+  UPDATE_TIMEBOX(state, {index, timeboxId}) {
+    if (index == -1) {
       return;
     }
-    state.timeboxList[timeboxIndex] = timebox;
+    state.timeboxList[index] = timeboxId;
   },
   SET_CURRENT_TIMEBOX(state, id) {
     state.currentTimeboxId = id;
@@ -78,7 +78,7 @@ export const mutations = {
 export const actions = {
   updateTimebox({commit, getters}, timeboxId){
     let index = getters.getTimeboxIndexById(timeboxId);
-    commit("UPDATE_TIMEBOX", index);
+    commit("UPDATE_TIMEBOX", {index, timeboxId});
   },
   nextTimebox({state, commit, getters}){
     let index = getters.getTimeboxIndexById(state.currentTimeboxId);

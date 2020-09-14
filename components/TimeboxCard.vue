@@ -8,12 +8,17 @@
       {{ title }}
     </v-card-title>
     <v-card-text>
-      <span class="text-h4">{{
-        moment.duration(remainingTime, "seconds").format()
-      }}</span>
-      <span class="text-h6"
-        >/{{ moment.duration(duration, "seconds").format() }}</span
-      >
+      <div v-if="!editing">
+        <span class="text-h4">{{
+          moment.duration(remainingTime, "seconds").format()
+        }}</span>
+        <span class="text-h6"
+          >/{{ moment.duration(duration, "seconds").format() }}</span
+        >
+      </div>
+      <div v-else>
+        <duration-picker v-model="form.duration"></duration-picker>
+      </div>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -60,8 +65,12 @@ import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import statusEnum from "../assets/status";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import DurationPicker from "./DurationPicker";
 
 export default {
+  components: {
+    DurationPicker
+  },
   props: {
     id: {
       required: true
@@ -79,7 +88,11 @@ export default {
       editing: false,
       remainingTime: 0,
       timerInterval: null,
-      moment
+      moment,
+      form: {
+        title: this.title,
+        duration: this.duration
+      }
     };
   },
   mounted() {
