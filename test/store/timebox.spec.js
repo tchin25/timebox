@@ -1,5 +1,6 @@
+import { createLocalVue } from "@vue/test-utils";
+import Vuex from "vuex";
 import { getters, mutations, actions } from "../../store/timebox";
-// import {statusEnum } from "../"
 import { isEqual } from "lodash";
 import { statusEnum } from "~/assets/enums";
 
@@ -95,6 +96,16 @@ describe("timebox/mutations", () => {
     });
   });
 
+  describe("SET_CURRENT_TIMEBOX", () => {
+    test("Successfully sets currentTimeboxId", () => {
+      const state = {
+        currentTimeboxId: 0
+      };
+      mutations.SET_CURRENT_TIMEBOX(state, 1);
+      expect(state.currentTimeboxId).toBe(1);
+    });
+  });
+
   describe("_NEXT_TIMEBOX", () => {
     let state;
     beforeEach(() => {
@@ -121,6 +132,71 @@ describe("timebox/mutations", () => {
       mutations._NEXT_TIMEBOX(state, 2);
       expect(state.currentTimeboxId).toBe(-1);
       expect(state.status).toBe(statusEnum.STOPPED);
+    });
+  });
+});
+
+describe("timebox/actions", () => {
+  let vuexStore;
+  beforeEach(() => {
+    vuexStore = {
+      mutations,
+      getters,
+      actions
+    };
+  });
+
+  describe("updateTimebox", () => {
+    test("Successfully updates timebox", () => {
+      const localVue = createLocalVue();
+      localVue.use(Vuex);
+      vuexStore.state = {
+        timeboxList: [{ id: 25, title: "Title 1" }]
+      };
+      const store = new Vuex.Store(vuexStore);
+      store.dispatch("updateTimebox", { id: 25, title: "Title 2" });
+      expect(
+        isEqual(store.state.timeboxList, [{ id: 25, title: "Title 2" }])
+      ).toBe(true);
+    });
+  });
+  describe("nextTimebox", () => {
+    let localVue;
+    beforeEach(() => {
+      localVue = createLocalVue();
+      localVue.use(Vuex);
+      vuexStore.state = {
+        timeboxList: [
+          { id: 25, title: "Title 1" },
+          { id: 30, title: "Title 2" },
+          { id: 5, title: "Title 0" }
+        ]
+      };
+    });
+    test("Successfully switches to next timebox in list", () => {
+      vuexStore.state.currentTimeboxId = 25;
+      const store = new Vuex.Store(vuexStore);
+
+      store.dispatch("nextTimebox");
+      expect(store.state.currentTimeboxId).toBe(30);
+    });
+    test("Successfully loops when set to repeat", () => {
+      vuexStore.state.repeat = true;
+      vuexStore.state.currentTimeboxId = 5;
+      const store = new Vuex.Store(vuexStore);
+
+      store.dispatch("nextTimebox");
+      expect(store.state.currentTimeboxId).toBe(25);
+      expect(store.state.status).not.toBe(statusEnum.STOPPED);
+    });
+    test("Does not loop when hit end and not set to repeat", () => {
+      vuexStore.state.repeat = false;
+      vuexStore.state.currentTimeboxId = 5;
+      const store = new Vuex.Store(vuexStore);
+
+      store.dispatch("nextTimebox");
+      expect(store.state.currentTimeboxId).toBe(-1);
+      expect(store.state.status).toBe(statusEnum.STOPPED);
     });
   });
 });
