@@ -128,13 +128,13 @@ describe("timebox/mutations", () => {
       state.repeat = true;
       mutations._NEXT_TIMEBOX(state, 2);
       expect(state.currentTimeboxId).toBe(25);
-      expect(state.status).not.toBe(statusEnum.STOPPED);
+      expect(state.status).not.toBe(statusEnum.FINISHED);
     });
     test("Does not loop when hit end and not set to repeat", () => {
       state.repeat = false;
       mutations._NEXT_TIMEBOX(state, 2);
       expect(state.currentTimeboxId).toBe(-1);
-      expect(state.status).toBe(statusEnum.STOPPED);
+      expect(state.status).toBe(statusEnum.FINISHED);
     });
   });
 });
@@ -185,7 +185,7 @@ describe("timebox/actions", () => {
 
       store.dispatch("nextTimebox");
       expect(store.state.currentTimeboxId).toBe(25);
-      expect(store.state.status).not.toBe(statusEnum.STOPPED);
+      expect(store.state.status).not.toBe(statusEnum.FINISHED);
     });
     test("Does not loop when hit end and not set to repeat", () => {
       vuexStore.state.repeat = false;
@@ -194,7 +194,7 @@ describe("timebox/actions", () => {
 
       store.dispatch("nextTimebox");
       expect(store.state.currentTimeboxId).toBe(-1);
-      expect(store.state.status).toBe(statusEnum.STOPPED);
+      expect(store.state.status).toBe(statusEnum.FINISHED);
     });
   });
 });

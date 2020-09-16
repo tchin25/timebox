@@ -1,7 +1,8 @@
 export const statusEnum = {
     START: 1,
     PAUSED: 0,
-    STOPPED: -1
+    STOPPED: -1, // Timebox stopped for reason other than finished
+    FINISHED: -2 // End of timebox list reached
 }
 
 export const completionEnum = {

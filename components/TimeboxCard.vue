@@ -1,5 +1,9 @@
 <template>
-  <v-card class="mx-auto" :flat="isCompleted == completionEnum.COMPLETED" width="100%">
+  <v-card
+    class="mx-auto"
+    :flat="isCompleted == completionEnum.COMPLETED"
+    width="100%"
+  >
     <div class="timebox-background" :style="backgroundHeight"></div>
     <div class="handle">
       <v-icon>mdi-drag</v-icon>
@@ -18,13 +22,18 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn icon v-if="!active && editing" color="green" @click="saveTimebox">
+      <v-btn
+        icon
+        v-if="!isActive && editing"
+        color="green"
+        @click="saveTimebox"
+      >
         <v-icon>mdi-content-save</v-icon>
       </v-btn>
       <v-btn
         icon
         v-else
-        :disabled="active"
+        :disabled="isActive"
         color="blue"
         @click="editing = true"
       >
@@ -32,7 +41,7 @@
       </v-btn>
       <v-btn
         icon
-        v-if="!active && editing"
+        v-if="!isActive && editing"
         color="red"
         @click="editing = false"
       >
@@ -41,7 +50,7 @@
       <v-btn
         icon
         v-else
-        :disabled="active"
+        :disabled="isActive"
         color="red"
         @click="DELETE_TIMEBOX(id)"
       >
@@ -97,7 +106,7 @@ export default {
         ...this.form
       };
       this.updateTimebox(timebox);
-      if (!this.active) {
+      if (this.isCompleted === completionEnum.NOT_COMPLETED) {
         this.remainingTime = this.form.duration;
       }
       this.editing = false;
@@ -106,17 +115,29 @@ export default {
     ...mapActions("timebox", ["updateTimebox", "nextTimebox"])
   },
   computed: {
-    active() {
+    isActive() {
       return this.currentTimeboxId === this.id;
     },
     backgroundHeight() {
-      if (!this.active) {
-        return this.isCompleted ? "height: 100%;" : "height: 0%;";
+      switch (this.isCompleted) {
+        case completionEnum.COMPLETED:
+          return "height: 100%;";
+          break;
+        case completionEnum.NOT_COMPLETED:
+          return "height: 0%;";
+          break;
+        case completionEnum.IN_PROGRESS:
+          return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
+          break;
+        default:
+          return "height: 0%;";
       }
-      return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
     },
     isCompleted() {
-      if (this.active) {
+      if (this.status === statusEnum.FINISHED) {
+        return completionEnum.COMPLETED;
+      }
+      if (this.timerInterval) {
         return completionEnum.IN_PROGRESS;
       }
       return this.getTimeboxIndexById(this.id) <
@@ -138,13 +159,13 @@ export default {
     ...mapGetters("timebox", ["getTimeboxIndexById"])
   },
   watch: {
-    active: function(newVal) {
+    isActive: function(newVal) {
       if (newVal === true) {
         this.editing = false;
       }
     },
     isCompleted: function(newVal) {
-      if (this.active) {
+      if (this.isActive) {
         return;
       }
       if (newVal === completionEnum.NOT_COMPLETED) {
@@ -154,7 +175,7 @@ export default {
       }
     },
     status: function(newVal) {
-      if (this.currentTimeboxId !== this.id) {
+      if (!this.isActive) {
         return;
       }
 

@@ -63,11 +63,11 @@ export const mutations = {
   },
   _NEXT_TIMEBOX(state, currentTimeboxIndex) {
     if (
-      currentTimeboxIndex == -1 ||
-      (currentTimeboxIndex == state.timeboxList.length - 1 && state.repeat == false)
+      currentTimeboxIndex == state.timeboxList.length - 1 &&
+      state.repeat == false
     ) {
       state.currentTimeboxId = -1;
-      state.status = statusEnum.STOPPED;
+      state.status = statusEnum.FINISHED;
     } else if (
       currentTimeboxIndex == state.timeboxList.length - 1 &&
       state.repeat == true
