@@ -4,6 +4,9 @@ import { getters, mutations, actions } from "../../store/timebox";
 import { isEqual } from "lodash";
 import { statusEnum } from "~/assets/enums";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
+
 describe("timebox/getters", () => {
   const state = {
     timeboxList: [{ id: 25 }, { id: 20 }, { id: 5 }]
@@ -148,8 +151,6 @@ describe("timebox/actions", () => {
 
   describe("updateTimebox", () => {
     test("Successfully updates timebox", () => {
-      const localVue = createLocalVue();
-      localVue.use(Vuex);
       vuexStore.state = {
         timeboxList: [{ id: 25, title: "Title 1" }]
       };
@@ -161,10 +162,7 @@ describe("timebox/actions", () => {
     });
   });
   describe("nextTimebox", () => {
-    let localVue;
     beforeEach(() => {
-      localVue = createLocalVue();
-      localVue.use(Vuex);
       vuexStore.state = {
         timeboxList: [
           { id: 25, title: "Title 1" },

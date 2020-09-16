@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" :flat="isCompleted" width="100%">
+  <v-card class="mx-auto" :flat="isCompleted == completionEnum.COMPLETED" width="100%">
     <div class="timebox-background" :style="backgroundHeight"></div>
     <div class="handle">
       <v-icon>mdi-drag</v-icon>
@@ -54,11 +54,12 @@
 <script>
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
-import { statusEnum } from "../assets/enums";
+import { statusEnum, completionEnum } from "../assets/enums";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import DurationPicker from "./DurationPicker";
 
 export default {
+  name: "timebox-card",
   components: {
     DurationPicker
   },
@@ -82,7 +83,8 @@ export default {
       form: {
         title: this.title,
         duration: this.duration
-      }
+      },
+      completionEnum
     };
   },
   mounted() {
@@ -115,12 +117,12 @@ export default {
     },
     isCompleted() {
       if (this.active) {
-        return null;
+        return completionEnum.IN_PROGRESS;
       }
       return this.getTimeboxIndexById(this.id) <
         this.getTimeboxIndexById(this.currentTimeboxId)
-        ? true
-        : false;
+        ? completionEnum.COMPLETED
+        : completionEnum.NOT_COMPLETED;
     },
     formattedRemainingTime() {
       return moment
@@ -145,7 +147,7 @@ export default {
       if (this.active) {
         return;
       }
-      if (newVal === false) {
+      if (newVal === completionEnum.NOT_COMPLETED) {
         this.remainingTime = this.duration;
       } else {
         this.remainingTime = 0;
