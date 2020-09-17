@@ -15,5 +15,5 @@ module.exports = {
     "<rootDir>/pages/**/*.vue",
     "<rootDir>/store/**/*.js"
   ],
-  coverageReporters: ["json-summary", "text"]
+  coverageReporters: ["json-summary", "text", "json", "lcov", "clover"]
 };

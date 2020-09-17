@@ -97,7 +97,7 @@ export default {
     };
   },
   mounted() {
-    this.remainingTime = this.duration;
+    // console.log(this.isCompleted)
   },
   methods: {
     saveTimebox() {
@@ -168,6 +168,7 @@ export default {
       if (this.isActive) {
         return;
       }
+      // console.log(this.title + " " + newVal);
       if (newVal === completionEnum.NOT_COMPLETED) {
         this.remainingTime = this.duration;
       } else {
@@ -180,7 +181,7 @@ export default {
       }
 
       switch (newVal) {
-        case statusEnum.START:
+        case statusEnum.STARTED:
           this.timerInterval = setInterval(
             () => (this.remainingTime -= 1),
             1000
@@ -202,7 +203,7 @@ export default {
           return;
         }
 
-        if (this.status === statusEnum.START) {
+        if (this.status === statusEnum.STARTED) {
           this.remainingTime = this.duration;
           this.timerInterval = setInterval(
             () => (this.remainingTime -= 1),

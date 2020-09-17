@@ -2,7 +2,7 @@ import { statusEnum } from "../assets/enums";
 
 /* istanbul ignore next */
 export const state = () => ({
-  currentTimeboxId: 0,
+  currentTimeboxId: 1,
   status: statusEnum.STOPPED,
   repeat: true,
   timeboxList: [
