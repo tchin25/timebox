@@ -123,9 +123,6 @@ export default {
         case completionEnum.COMPLETED:
           return "height: 100%;";
           break;
-        case completionEnum.NOT_COMPLETED:
-          return "height: 0%;";
-          break;
         case completionEnum.IN_PROGRESS:
           return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
           break;
@@ -134,7 +131,7 @@ export default {
       }
     },
     isCompleted() {
-      if (this.status === statusEnum.FINISHED) {
+      if (this.status === (statusEnum.STOPPED || statusEnum.FINISHED)) {
         return completionEnum.COMPLETED;
       }
       if (this.timerInterval) {
@@ -191,6 +188,7 @@ export default {
           clearInterval(this.timerInterval);
           break;
         case statusEnum.STOPPED:
+        case statusEnum.FINISHED:
           clearInterval(this.timerInterval);
           this.remainingTime = this.duration;
           // Reset timeboxlist method
