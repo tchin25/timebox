@@ -188,7 +188,7 @@ export default {
       switch (newVal) {
         case statusEnum.STARTED:
           this.timerInterval = setInterval(
-            () => (this.remainingTime -= 1),
+            () => this.SET_REMAINING_TIME(this.remainingTime - 1),
             1000
           );
           break;

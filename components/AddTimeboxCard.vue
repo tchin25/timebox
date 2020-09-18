@@ -21,7 +21,6 @@ export default {
   methods: {
     addCard() {
       let toAdd = {
-        id: 0,
         title: "Test name 1",
         duration: 3600,
         advance: {

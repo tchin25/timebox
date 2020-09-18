@@ -58,10 +58,11 @@ describe("timebox/mutations", () => {
   describe("ADD_TIMEBOX", () => {
     test("Successfully adds timebox to end of timeboxList", () => {
       const state = {
-        timeboxList: [{ id: 25 }]
+        timeboxList: [{ id: 25 }],
+        toAddId: 1
       };
       mutations.ADD_TIMEBOX(state, { id: 10 });
-      expect(isEqual(state.timeboxList, [{ id: 25 }, { id: 10 }])).toBe(true);
+      expect(isEqual(state.timeboxList, [{ id: 25 }, { id: 1 }])).toBe(true);
     });
   });
 
@@ -195,6 +196,32 @@ describe("timebox/actions", () => {
       store.dispatch("nextTimebox");
       expect(store.state.currentTimeboxId).toBe(-1);
       expect(store.state.status).toBe(statusEnum.FINISHED);
+    });
+  });
+  describe("deleteTimebox", () => {
+    let store;
+    beforeEach(() => {
+      vuexStore.state = {
+        timeboxList: [
+          { id: 25, title: "Title 1" },
+          { id: 30, title: "Title 2" },
+          { id: 5, title: "Title 0" }
+        ],
+        currentTimeboxId: 30
+      };
+      store = new Vuex.Store(vuexStore);
+    });
+    test("Deleting current timebox moves currentTimeboxId to previous one", () => {
+      store.dispatch("deleteTimebox", 30);
+      expect(store.state.currentTimeboxId).toBe(25);
+    });
+    test("Deleting past timebox does nothing to currentTimeboxId", () => {
+      store.dispatch("deleteTimebox", 25);
+      expect(store.state.currentTimeboxId).toBe(30);
+    });
+    test("Deleting future timebox does nothing to currentTimeboxId", () => {
+      store.dispatch("deleteTimebox", 5);
+      expect(store.state.currentTimeboxId).toBe(30);
     });
   });
 });

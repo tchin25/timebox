@@ -5,36 +5,9 @@ export const state = () => ({
   currentTimeboxId: 1,
   status: statusEnum.PAUSED,
   repeat: true,
-  remainingTime: 5,
-  timeboxList: [
-    {
-      id: 0,
-      title: "Test name 1",
-      duration: 10,
-      advance: {
-        alternate: 0,
-        offset: 0
-      }
-    },
-    {
-      id: 1,
-      title: "Test name 2",
-      duration: 10,
-      advance: {
-        alternate: 0,
-        offset: 0
-      }
-    },
-    {
-      id: 2,
-      title: "Test name 3",
-      duration: 10,
-      advance: {
-        alternate: 0,
-        offset: 0
-      }
-    }
-  ]
+  remainingTime: 0,
+  timeboxList: [],
+  toAddId: 0 // Increment every time a timebox is added to prevent id collision
 });
 
 export const getters = {
@@ -51,7 +24,8 @@ export const mutations = {
     state.timeboxList = state.timeboxList.filter(box => box.id != id);
   },
   ADD_TIMEBOX(state, timebox) {
-    state.timeboxList.push(timebox);
+    state.timeboxList.push({...timebox, id: state.toAddId});
+    state.toAddId++;
   },
   UPDATE_TIMEBOX(state, { index, timebox }) {
     if (index == -1 || index >= state.timeboxList.length) {
@@ -91,5 +65,13 @@ export const actions = {
   nextTimebox({ state, commit, getters }) {
     let index = getters.getTimeboxIndexById(state.currentTimeboxId);
     commit("_NEXT_TIMEBOX", index);
+  },
+  deleteTimebox({ state, commit, getters }, id) {
+    let currentLocation = getters.getTimeboxIndexById(state.currentTimeboxId);
+    let deleteLocation = getters.getTimeboxIndexById(id);
+    if (currentLocation === deleteLocation){
+      commit("SET_CURRENT_TIMEBOX", state.timeboxList[currentLocation - 1].id);
+    }
+    commit("DELETE_TIMEBOX", id);
   }
 };
