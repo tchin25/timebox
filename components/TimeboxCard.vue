@@ -131,10 +131,13 @@ export default {
       }
     },
     isCompleted() {
-      if (this.status === (statusEnum.STOPPED || statusEnum.FINISHED)) {
+      if (
+        this.status === statusEnum.STOPPED ||
+        this.status === statusEnum.FINISHED
+      ) {
         return completionEnum.COMPLETED;
       }
-      if (this.timerInterval) {
+      if (this.isActive) {
         return completionEnum.IN_PROGRESS;
       }
       return this.getTimeboxIndexById(this.id) <

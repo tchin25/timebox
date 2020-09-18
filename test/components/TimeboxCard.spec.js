@@ -56,12 +56,13 @@ describe("TimeboxCard.vue", () => {
       localVue.use(Vuex);
     });
 
-    const generateWrapper = (status, currentTimeboxId, propsData = {}) => {
+    const generateWrapper = (status, currentTimeboxId, propsData = {}, stateData = {}) => {
       const store = new Vuex.Store(
         generateStore({
           status: status,
           currentTimeboxId,
-          timeboxList
+          timeboxList,
+          ...stateData
         })
       );
       return shallowMount(TimeboxCard, {
@@ -166,6 +167,7 @@ describe("TimeboxCard.vue", () => {
         });
 
         test("Timebox displays as in progress", async () => {
+          console.log(wrapper.vm.isCompleted)
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
           await wrapper.setData({ remainingTime: 30 });
