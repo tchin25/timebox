@@ -117,18 +117,6 @@ export default {
     isActive() {
       return this.currentTimeboxId === this.id;
     },
-    backgroundHeight() {
-      switch (this.isCompleted) {
-        case completionEnum.COMPLETED:
-          return "height: 100%;";
-          break;
-        case completionEnum.IN_PROGRESS:
-          return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
-          break;
-        default:
-          return "height: 0%;";
-      }
-    },
     isCompleted() {
       if (
         this.status === statusEnum.STOPPED ||
@@ -144,10 +132,33 @@ export default {
         ? completionEnum.COMPLETED
         : completionEnum.NOT_COMPLETED;
     },
+    backgroundHeight() {
+      switch (this.isCompleted) {
+        case completionEnum.COMPLETED:
+          return "height: 100%;";
+          break;
+        case completionEnum.IN_PROGRESS:
+          return `height: ${(1 - this.remainingTime / this.duration) * 100}%;`;
+          break;
+        default:
+          return "height: 0%;";
+      }
+    },
     formattedRemainingTime() {
-      return moment
-        .duration(this.remainingTime, "seconds")
-        .format("hh:mm:ss", { trim: "large mid" });
+      switch (this.isCompleted) {
+        case completionEnum.NOT_COMPLETED:
+          return moment
+            .duration(this.duration, "seconds")
+            .format("hh:mm:ss", { trim: "large mid" });
+          break;
+        case completionEnum.IN_PROGRESS:
+          return moment
+            .duration(this.remainingTime, "seconds")
+            .format("hh:mm:ss", { trim: "large mid" });
+          break;
+        default:
+          return "00";
+      }
     },
     formattedDuration() {
       return moment
@@ -162,7 +173,9 @@ export default {
       handler: function(newVal) {
         if (newVal === true) {
           this.editing = false;
-          this.SET_REMAINING_TIME(this.duration);
+          if (this.remainingTime <= 0) {
+            this.SET_REMAINING_TIME(this.duration);
+          }
         }
       },
       immediate: true

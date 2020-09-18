@@ -3,9 +3,9 @@ import { statusEnum } from "../assets/enums";
 /* istanbul ignore next */
 export const state = () => ({
   currentTimeboxId: 1,
-  status: statusEnum.STOPPED,
+  status: statusEnum.PAUSED,
   repeat: true,
-  remainingTime: 0,
+  remainingTime: 5,
   timeboxList: [
     {
       id: 0,
@@ -63,7 +63,6 @@ export const mutations = {
     state.currentTimeboxId = id;
   },
   SET_REMAINING_TIME(state, seconds) {
-    console.log("set remaining time " + seconds)
     state.remainingTime = seconds;
   },
   _NEXT_TIMEBOX(state, currentTimeboxIndex) {

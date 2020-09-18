@@ -56,12 +56,18 @@ describe("TimeboxCard.vue", () => {
       localVue.use(Vuex);
     });
 
-    const generateWrapper = (status, currentTimeboxId, propsData = {}, stateData = {}) => {
+    const generateWrapper = (
+      status,
+      currentTimeboxId,
+      propsData = {},
+      stateData = {}
+    ) => {
       const store = new Vuex.Store(
         generateStore({
           status: status,
           currentTimeboxId,
           timeboxList,
+          remainingTime: 0,
           ...stateData
         })
       );
@@ -107,7 +113,7 @@ describe("TimeboxCard.vue", () => {
           expect(wrapper.vm.timerInterval).not.toBe(null);
         });
 
-        test("Timebox displays as in progress", async () => {
+        test("Timebox displays as in progress", () => {
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
           wrapper.vm.SET_REMAINING_TIME(30);
@@ -129,7 +135,7 @@ describe("TimeboxCard.vue", () => {
 
         test("Timebox displayed as not finished", () => {
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
-          expect(wrapper.vm.formattedRemainingTime).toBe("00");
+          expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
         });
       });
     });
@@ -166,12 +172,21 @@ describe("TimeboxCard.vue", () => {
           expect(wrapper.vm.timerInterval).toBe(null);
         });
 
-        test("Timebox displays as in progress", async () => {
-          console.log(wrapper.vm.isCompleted)
+        test("Timebox displays as in progress", () => {
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
           wrapper.vm.SET_REMAINING_TIME(30);
-          console.log(wrapper.vm.remainingTime)
+          expect(wrapper.vm.backgroundHeight).toBe("height: 50%;");
+          expect(wrapper.vm.formattedRemainingTime).toBe("30");
+        });
+
+        test("Timebox displays as in progress when loading remaining time from cache", () => {
+          wrapper = generateWrapper(
+            statusEnum.PAUSED,
+            0,
+            { id: 0 },
+            { remainingTime: 30 }
+          );
           expect(wrapper.vm.backgroundHeight).toBe("height: 50%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("30");
         });
@@ -190,7 +205,7 @@ describe("TimeboxCard.vue", () => {
 
         test("Timebox displayed as not finished", () => {
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
-          expect(wrapper.vm.formattedRemainingTime).toBe("00");
+          expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
         });
       });
     });
@@ -223,7 +238,7 @@ describe("TimeboxCard.vue", () => {
         wrapper = generateWrapper(statusEnum.FINISHED, 1, { id: 0 });
         expect(wrapper.vm.isCompleted).toBe(completionEnum.COMPLETED);
         expect(wrapper.vm.timerInterval).toBe(null);
-      })
+      });
     });
   });
 });
