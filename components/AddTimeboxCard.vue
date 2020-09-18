@@ -1,24 +1,26 @@
 <template>
   <v-card outlined class="mx-auto" width="344">
-    <v-card-title>
-      <v-text-field
-        prepend-icon="mdi-pencil"
-        label="Title"
-        v-model="form.title"
-      ></v-text-field>
-    </v-card-title>
-    <v-card-text>
-      <duration-picker v-model="form.duration"></duration-picker>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn icon color="green" @click="addCard">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-btn icon color="red" @click="clearCard">
-        <v-icon>mdi-undo-variant</v-icon>
-      </v-btn>
-    </v-card-actions>
+    <v-form ref="form" @submit.prevent="addCard" lazy-validation>
+      <v-card-title>
+        <v-text-field
+          prepend-icon="mdi-pencil"
+          label="Title"
+          v-model="form.title"
+        ></v-text-field>
+      </v-card-title>
+      <v-card-text>
+        <duration-picker v-model="form.duration"></duration-picker>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon color="green" type="submit">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+        <v-btn icon color="red" @click="reset">
+          <v-icon>mdi-undo-variant</v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-form>
   </v-card>
 </template>
 
@@ -33,19 +35,22 @@ export default {
     return {
       form: {
         title: "",
-        duration: 0
+        duration: "00:00:00"
       }
     };
   },
   methods: {
     addCard() {
-      this.ADD_TIMEBOX(this.form);
-      this.clearCard();
+      if (this.$refs.form.validate()) {
+        this.ADD_TIMEBOX(this.form);
+        this.reset();
+      }
     },
-    clearCard() {
+    reset() {
+      this.$refs.form.reset();
       this.form = {
         title: "",
-        duration: 0
+        duration: "00:00:00"
       };
     },
     ...mapMutations("timebox", ["ADD_TIMEBOX"])

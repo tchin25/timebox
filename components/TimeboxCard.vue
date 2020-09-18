@@ -10,64 +10,56 @@
     <div class="handle">
       <v-icon>mdi-drag</v-icon>
     </div>
-    <v-card-title>
-      <div v-if="!editing">
-        {{ title }}
-      </div>
-      <div v-else>
-        <v-text-field
-          prepend-icon="mdi-pencil"
-          label="Title"
-          v-model="form.title"
-        ></v-text-field>
-      </div>
-    </v-card-title>
-    <v-card-text>
-      <div v-if="!editing">
-        <span class="text-h4">{{ formattedRemainingTime }}</span>
-        <span class="text-h6">/{{ formattedDuration }}</span>
-      </div>
-      <div v-else>
-        <duration-picker v-model="form.duration"></duration-picker>
-      </div>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn
-        icon
-        v-if="!isActive && editing"
-        color="green"
-        @click="saveTimebox"
-      >
-        <v-icon>mdi-content-save</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        v-else
-        :disabled="isActive"
-        color="blue"
-        @click="editing = true"
-      >
-        <v-icon>mdi-pencil</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        v-if="!isActive && editing"
-        color="red"
-        @click="editing = false"
-      >
-        <v-icon>mdi-undo-variant</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        v-else
-        :disabled="isActive"
-        color="red"
-        @click="deleteTimebox(id)"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </v-card-actions>
+    <v-form ref="form" @submit.prevent="saveTimebox" lazy-validation>
+      <v-card-title>
+        <div v-if="!editing">
+          {{ title }}
+        </div>
+        <div v-else>
+          <v-text-field
+            prepend-icon="mdi-pencil"
+            label="Title"
+            v-model="form.title"
+          ></v-text-field>
+        </div>
+      </v-card-title>
+      <v-card-text>
+        <div v-if="!editing">
+          <span class="text-h4">{{ formattedRemainingTime }}</span>
+          <span class="text-h6">/{{ formattedDuration }}</span>
+        </div>
+        <div v-else>
+          <duration-picker v-model="form.duration"></duration-picker>
+        </div>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon v-if="!isActive && editing" color="green" type="submit">
+          <v-icon>mdi-content-save</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          v-else
+          :disabled="isActive"
+          color="blue"
+          @click.prevent="editing = true"
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn icon v-if="!isActive && editing" color="red" @click="resetForm">
+          <v-icon>mdi-undo-variant</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          v-else
+          :disabled="isActive"
+          color="red"
+          @click="deleteTimebox(id)"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-form>
   </v-card>
 </template>
 
@@ -120,6 +112,10 @@ export default {
       if (this.isCompleted === completionEnum.NOT_COMPLETED) {
         this.remainingTime = this.form.duration;
       }
+      this.editing = false;
+    },
+    resetForm() {
+      this.$refs.form.reset();
       this.editing = false;
     },
     ...mapMutations("timebox", ["SET_REMAINING_TIME"]),

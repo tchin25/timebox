@@ -17,6 +17,7 @@
         readonly
         v-bind="attrs"
         v-on="on"
+        :rules="[() => duration != '00:00:00']"
       ></v-text-field>
     </template>
     <v-time-picker
