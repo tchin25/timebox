@@ -5,6 +5,7 @@ export const state = () => ({
   currentTimeboxId: 1,
   status: statusEnum.STOPPED,
   repeat: true,
+  remainingTime: 0,
   timeboxList: [
     {
       id: 0,
@@ -60,6 +61,10 @@ export const mutations = {
   },
   SET_CURRENT_TIMEBOX(state, id) {
     state.currentTimeboxId = id;
+  },
+  SET_REMAINING_TIME(state, seconds) {
+    console.log("set remaining time " + seconds)
+    state.remainingTime = seconds;
   },
   _NEXT_TIMEBOX(state, currentTimeboxIndex) {
     if (

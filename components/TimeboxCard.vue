@@ -87,7 +87,6 @@ export default {
   data() {
     return {
       editing: false,
-      remainingTime: 0,
       timerInterval: null,
       form: {
         title: this.title,
@@ -111,7 +110,7 @@ export default {
       }
       this.editing = false;
     },
-    ...mapMutations("timebox", ["DELETE_TIMEBOX"]),
+    ...mapMutations("timebox", ["DELETE_TIMEBOX", "SET_REMAINING_TIME"]),
     ...mapActions("timebox", ["updateTimebox", "nextTimebox"])
   },
   computed: {
@@ -155,25 +154,18 @@ export default {
         .duration(this.duration, "seconds")
         .format("hh[h]:mm[m]:ss[s]", { trim: "large mid" });
     },
-    ...mapState("timebox", ["currentTimeboxId", "status"]),
+    ...mapState("timebox", ["currentTimeboxId", "status", "remainingTime"]),
     ...mapGetters("timebox", ["getTimeboxIndexById"])
   },
   watch: {
-    isActive: function(newVal) {
-      if (newVal === true) {
-        this.editing = false;
-      }
-    },
-    isCompleted: function(newVal) {
-      if (this.isActive) {
-        return;
-      }
-      // console.log(this.title + " " + newVal);
-      if (newVal === completionEnum.NOT_COMPLETED) {
-        this.remainingTime = this.duration;
-      } else {
-        this.remainingTime = 0;
-      }
+    isActive: {
+      handler: function(newVal) {
+        if (newVal === true) {
+          this.editing = false;
+          this.SET_REMAINING_TIME(this.duration);
+        }
+      },
+      immediate: true
     },
     status: function(newVal) {
       if (!this.isActive) {
@@ -191,9 +183,9 @@ export default {
           clearInterval(this.timerInterval);
           break;
         case statusEnum.STOPPED:
+          this.SET_REMAINING_TIME(this.duration);
         case statusEnum.FINISHED:
           clearInterval(this.timerInterval);
-          this.remainingTime = this.duration;
           // Reset timeboxlist method
           break;
       }
@@ -205,9 +197,9 @@ export default {
         }
 
         if (this.status === statusEnum.STARTED) {
-          this.remainingTime = this.duration;
+          this.SET_REMAINING_TIME(this.duration);
           this.timerInterval = setInterval(
-            () => (this.remainingTime -= 1),
+            () => this.SET_REMAINING_TIME(this.remainingTime - 1),
             1000
           );
         }

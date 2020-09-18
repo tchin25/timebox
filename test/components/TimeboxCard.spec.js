@@ -110,7 +110,7 @@ describe("TimeboxCard.vue", () => {
         test("Timebox displays as in progress", async () => {
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
-          await wrapper.setData({ remainingTime: 30 });
+          wrapper.vm.SET_REMAINING_TIME(30);
           expect(wrapper.vm.backgroundHeight).toBe("height: 50%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("30");
         });
@@ -170,7 +170,8 @@ describe("TimeboxCard.vue", () => {
           console.log(wrapper.vm.isCompleted)
           expect(wrapper.vm.backgroundHeight).toBe("height: 0%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("01:00");
-          await wrapper.setData({ remainingTime: 30 });
+          wrapper.vm.SET_REMAINING_TIME(30);
+          console.log(wrapper.vm.remainingTime)
           expect(wrapper.vm.backgroundHeight).toBe("height: 50%;");
           expect(wrapper.vm.formattedRemainingTime).toBe("30");
         });
