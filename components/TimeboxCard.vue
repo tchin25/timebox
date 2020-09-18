@@ -1,7 +1,9 @@
 <template>
   <v-card
     class="mx-auto"
-    :flat="isCompleted == completionEnum.COMPLETED"
+    :flat="
+      isCompleted == completionEnum.COMPLETED && status !== statusEnum.STOPPED
+    "
     width="100%"
   >
     <div class="timebox-background" :style="backgroundHeight"></div>
@@ -52,7 +54,7 @@
         v-else
         :disabled="isActive"
         color="red"
-        @click="DELETE_TIMEBOX(id)"
+        @click="deleteTimebox(id)"
       >
         <v-icon>mdi-delete</v-icon>
       </v-btn>
@@ -92,7 +94,8 @@ export default {
         title: this.title,
         duration: this.duration
       },
-      completionEnum
+      completionEnum,
+      statusEnum
     };
   },
   mounted() {
@@ -110,8 +113,8 @@ export default {
       }
       this.editing = false;
     },
-    ...mapMutations("timebox", ["DELETE_TIMEBOX", "SET_REMAINING_TIME"]),
-    ...mapActions("timebox", ["updateTimebox", "nextTimebox"])
+    ...mapMutations("timebox", ["SET_REMAINING_TIME"]),
+    ...mapActions("timebox", ["updateTimebox", "nextTimebox", "deleteTimebox"])
   },
   computed: {
     isActive() {
@@ -133,6 +136,9 @@ export default {
         : completionEnum.NOT_COMPLETED;
     },
     backgroundHeight() {
+      if (this.status == statusEnum.STOPPED) {
+        return "height: 0%;";
+      }
       switch (this.isCompleted) {
         case completionEnum.COMPLETED:
           return "height: 100%;";
@@ -145,6 +151,11 @@ export default {
       }
     },
     formattedRemainingTime() {
+      if (this.status == statusEnum.STOPPED) {
+        return moment
+          .duration(this.duration, "seconds")
+          .format("hh:mm:ss", { trim: "large mid" });
+      }
       switch (this.isCompleted) {
         case completionEnum.NOT_COMPLETED:
           return moment
