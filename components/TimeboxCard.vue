@@ -11,7 +11,16 @@
       <v-icon>mdi-drag</v-icon>
     </div>
     <v-card-title>
-      {{ title }}
+      <div v-if="!editing">
+        {{ title }}
+      </div>
+      <div v-else>
+        <v-text-field
+          prepend-icon="mdi-pencil"
+          label="Title"
+          v-model="form.title"
+        ></v-text-field>
+      </div>
     </v-card-title>
     <v-card-text>
       <div v-if="!editing">

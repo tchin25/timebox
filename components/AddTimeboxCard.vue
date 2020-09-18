@@ -1,15 +1,22 @@
 <template>
   <v-card outlined class="mx-auto" width="344">
     <v-card-title>
-      Name
+      <v-text-field
+        prepend-icon="mdi-pencil"
+        label="Title"
+        v-model="form.title"
+      ></v-text-field>
     </v-card-title>
     <v-card-text>
-      Text
+      <duration-picker v-model="form.duration"></duration-picker>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
       <v-btn icon color="green" @click="addCard">
         <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <v-btn icon color="red" @click="clearCard">
+        <v-icon>mdi-undo-variant</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -17,18 +24,29 @@
 
 <script>
 import { mapMutations } from "vuex";
+import DurationPicker from "./DurationPicker";
+
 export default {
+  name: "add-timebox-card",
+  components: { DurationPicker },
+  data() {
+    return {
+      form: {
+        title: "",
+        duration: 0
+      }
+    };
+  },
   methods: {
     addCard() {
-      let toAdd = {
-        title: "Test name 1",
-        duration: 3600,
-        advance: {
-          alternate: 0,
-          offset: 0
-        }
+      this.ADD_TIMEBOX(this.form);
+      this.clearCard();
+    },
+    clearCard() {
+      this.form = {
+        title: "",
+        duration: 0
       };
-      this.ADD_TIMEBOX(toAdd);
     },
     ...mapMutations("timebox", ["ADD_TIMEBOX"])
   }
