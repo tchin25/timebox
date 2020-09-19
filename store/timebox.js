@@ -24,7 +24,7 @@ export const mutations = {
     state.timeboxList = state.timeboxList.filter(box => box.id != id);
   },
   ADD_TIMEBOX(state, timebox) {
-    state.timeboxList.push({...timebox, id: state.toAddId});
+    state.timeboxList.push({ ...timebox, id: state.toAddId });
     state.toAddId++;
   },
   UPDATE_TIMEBOX(state, { index, timebox }) {
@@ -38,6 +38,25 @@ export const mutations = {
   },
   SET_REMAINING_TIME(state, seconds) {
     state.remainingTime = seconds;
+  },
+  SET_STATUS(state, status) {
+    switch (status) {
+      case statusEnum.STARTED:
+        if (state.currentTimeboxId === -1 && state.timeboxList.length > 0) {
+          state.currentTimeboxId = state.timeboxList[0].id;
+        }
+        if (state.timeboxList.length !== 0) {
+          state.status = status;
+        }
+        break;
+      case statusEnum.STOPPED:
+        state.currentTimeboxId = -1;
+        state.status = status;
+        break;
+      case statusEnum.PAUSED:
+        state.status = status;
+        break;
+    }
   },
   _NEXT_TIMEBOX(state, currentTimeboxIndex) {
     if (
@@ -64,16 +83,27 @@ export const actions = {
   },
   nextTimebox({ state, commit, getters }) {
     let index = getters.getTimeboxIndexById(state.currentTimeboxId);
-    commit("_NEXT_TIMEBOX", index);
+    if (state.timeboxList.length === 1) {
+      // Workaround to get repeat working on just 1 timebox
+      commit("SET_CURRENT_TIMEBOX", -1);
+      setTimeout(() => {
+        commit("_NEXT_TIMEBOX", index);
+      }, 50);
+    } else {
+      commit("_NEXT_TIMEBOX", index);
+    }
   },
   deleteTimebox({ state, commit, getters }, id) {
     let currentLocation = getters.getTimeboxIndexById(state.currentTimeboxId);
     let deleteLocation = getters.getTimeboxIndexById(id);
-    if (currentLocation === deleteLocation){
-      if (state.timeboxList.length === 1){
+    if (currentLocation === deleteLocation) {
+      if (state.timeboxList.length === 1) {
         commit("SET_CURRENT_TIMEBOX", -1);
-      }else {
-        commit("SET_CURRENT_TIMEBOX", state.timeboxList[currentLocation - 1].id);
+      } else {
+        commit(
+          "SET_CURRENT_TIMEBOX",
+          state.timeboxList[currentLocation - 1].id
+        );
       }
     }
 

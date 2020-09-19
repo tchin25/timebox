@@ -4,6 +4,7 @@
       Simple Timeboxer
     </p>
     <div style="position: relative; width: 344px;">
+      <status-buttons class="ma-2"></status-buttons>
       <draggable
         v-model="timeboxList"
         :move="onMoveCallback"
@@ -20,7 +21,6 @@
           }
         }"
       >
-        <!-- <status-buttons key="header" slot="header"></status-buttons> -->
         <timebox-card
           class="ma-2 timeboxList-item"
           v-for="element in timeboxList"
@@ -28,6 +28,7 @@
           v-bind="element"
         >
         </timebox-card>
+
         <add-timebox-card key="footer" slot="footer"></add-timebox-card>
       </draggable>
     </div>

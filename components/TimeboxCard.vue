@@ -224,10 +224,12 @@ export default {
 
         if (this.status === statusEnum.STARTED) {
           this.SET_REMAINING_TIME(this.duration);
-          this.timerInterval = setInterval(
-            () => this.SET_REMAINING_TIME(this.remainingTime - 1),
-            1000
-          );
+          if (!this.timerInterval) {
+            this.timerInterval = setInterval(
+              () => this.SET_REMAINING_TIME(this.remainingTime - 1),
+              1000
+            );
+          }
         }
       },
       immediate: true
