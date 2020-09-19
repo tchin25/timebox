@@ -70,8 +70,13 @@ export const actions = {
     let currentLocation = getters.getTimeboxIndexById(state.currentTimeboxId);
     let deleteLocation = getters.getTimeboxIndexById(id);
     if (currentLocation === deleteLocation){
-      commit("SET_CURRENT_TIMEBOX", state.timeboxList[currentLocation - 1].id);
+      if (state.timeboxList.length === 1){
+        commit("SET_CURRENT_TIMEBOX", -1);
+      }else {
+        commit("SET_CURRENT_TIMEBOX", state.timeboxList[currentLocation - 1].id);
+      }
     }
+
     commit("DELETE_TIMEBOX", id);
   }
 };

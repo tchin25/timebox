@@ -162,6 +162,7 @@ describe("timebox/actions", () => {
       ).toBe(true);
     });
   });
+  
   describe("nextTimebox", () => {
     beforeEach(() => {
       vuexStore.state = {
@@ -198,6 +199,7 @@ describe("timebox/actions", () => {
       expect(store.state.status).toBe(statusEnum.FINISHED);
     });
   });
+
   describe("deleteTimebox", () => {
     let store;
     beforeEach(() => {
@@ -223,5 +225,17 @@ describe("timebox/actions", () => {
       store.dispatch("deleteTimebox", 5);
       expect(store.state.currentTimeboxId).toBe(30);
     });
+    test("Deleting final timebox sets currentTimeboxId to -1", () => {
+      vuexStore.state = {
+        timeboxList: [
+          { id: 5, title: "Title 0" }
+        ],
+        currentTimeboxId: 5
+      };
+      store = new Vuex.Store(vuexStore);
+      store.dispatch("deleteTimebox", 5);
+      expect(store.state.currentTimeboxId).toBe(-1);
+    });
+
   });
 });

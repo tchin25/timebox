@@ -109,9 +109,6 @@ export default {
         ...this.form
       };
       this.updateTimebox(timebox);
-      if (this.isCompleted === completionEnum.NOT_COMPLETED) {
-        this.remainingTime = this.form.duration;
-      }
       this.editing = false;
     },
     resetForm() {

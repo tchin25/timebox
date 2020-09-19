@@ -2,13 +2,14 @@
   <v-card outlined class="mx-auto" width="344">
     <v-form ref="form" @submit.prevent="addCard" lazy-validation>
       <v-card-title>
+        Add New Timebox
+      </v-card-title>
+      <v-card-text>
         <v-text-field
           prepend-icon="mdi-pencil"
           label="Title"
           v-model="form.title"
         ></v-text-field>
-      </v-card-title>
-      <v-card-text>
         <duration-picker v-model="form.duration"></duration-picker>
       </v-card-text>
       <v-card-actions>
