@@ -1,10 +1,32 @@
 <template>
   <v-card class="mx-auto" flat max-width="100%">
     <div v-if="status != statusEnum.STARTED">
-      <v-btn block depressed color="green" @click="status = statusEnum.STARTED">
-        <span>Start</span>
-        <v-icon right>mdi-play</v-icon>
-      </v-btn>
+      <v-row no-gutters>
+        <v-col>
+          <v-btn
+            block
+            depressed
+            color="green"
+            :class="status === statusEnum.PAUSED ? 'button-left' : ''"
+            @click="status = statusEnum.STARTED"
+          >
+            <span>Start</span>
+            <v-icon right>mdi-play</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col v-if="status === statusEnum.PAUSED">
+          <v-btn
+            class="button-right"
+            block
+            depressed
+            color="red"
+            @click="status = statusEnum.STOPPED"
+          >
+            <span>Stop</span>
+            <v-icon right>mdi-stop</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
     </div>
     <div v-else>
       <v-row no-gutters>

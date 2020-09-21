@@ -194,16 +194,14 @@ export default {
       immediate: true
     },
     status: function(newVal) {
-      if (!this.isActive) {
-        return;
-      }
-
       switch (newVal) {
         case statusEnum.STARTED:
-          this.timerInterval = setInterval(
-            () => this.SET_REMAINING_TIME(this.remainingTime - 1),
-            1000
-          );
+          if (this.isActive) {
+            this.timerInterval = setInterval(
+              () => this.SET_REMAINING_TIME(this.remainingTime - 1),
+              1000
+            );
+          }
           break;
         case statusEnum.PAUSED:
           clearInterval(this.timerInterval);
@@ -212,7 +210,6 @@ export default {
           this.SET_REMAINING_TIME(this.duration);
         case statusEnum.FINISHED:
           clearInterval(this.timerInterval);
-          // Reset timeboxlist method
           break;
       }
     },
@@ -235,6 +232,9 @@ export default {
       immediate: true
     },
     remainingTime: function(newVal) {
+      if (newVal > this.duration) {
+        this.SET_REMAINING_TIME(this.duration);
+      }
       if (newVal <= 0 && this.timerInterval) {
         clearInterval(this.timerInterval);
         this.timerInterval = null;
