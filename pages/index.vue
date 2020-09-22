@@ -39,6 +39,8 @@
 import StatusButtons from "../components/StatusButtons";
 import TimeboxCard from "../components/TimeboxCard";
 import AddTimeboxCard from "../components/AddTimeboxCard";
+import { mapState, mapMutations } from "vuex";
+
 export default {
   components: {
     StatusButtons,
@@ -49,7 +51,8 @@ export default {
     onMoveCallback(evt, originalEvent) {
       console.log(evt);
       // return false; — for cancel
-    }
+    },
+    ...mapMutations("timebox", ["SET_REPEAT"])
   },
   computed: {
     timeboxList: {
@@ -59,7 +62,8 @@ export default {
       set(value) {
         this.$store.commit("timebox/SET_TIMEBOX_LIST", value);
       }
-    }
+    },
+    ...mapState("timebox", ["repeat"])
   }
 };
 </script>

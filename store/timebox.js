@@ -39,6 +39,9 @@ export const mutations = {
   SET_REMAINING_TIME(state, seconds) {
     state.remainingTime = seconds;
   },
+  SET_REPEAT(state, bool) {
+    state.repeat = bool;
+  },
   SET_STATUS(state, status) {
     switch (status) {
       case statusEnum.STARTED:

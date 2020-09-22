@@ -5,25 +5,32 @@ export const state = () => ({
       timeboxList: [
         {
           id: 0,
-          title: "Test name 1",
-          duration: 3600,
-          advance: {
-            alternate: 0,
-            offset: 0
-          }
+          title: "Work",
+          duration: 1500,
         },
         {
           id: 1,
-          title: "Test name 2",
-          duration: 1800,
-          advance: {
-            alternate: 0,
-            offset: 0
-          }
+          title: "Rest",
+          duration: 300,
+        }
+      ]
+    },
+    {
+      name: "Yoga MIA",
+      timeboxList: [
+        {
+          id: 0,
+          title: "Immersion",
+          duration: 300,
+        },
+        {
+          id: 1,
+          title: "SRS",
+          duration: 300,
         }
       ]
     }
-  ]
+  ],
 });
 
 export const mutations = {
