@@ -6,7 +6,7 @@
           link
           v-for="(timeboxList, index) in savedTimeboxLists"
           :key="index"
-          @change="switchTimeboxList(index)"
+          @click="switchTimeboxList(index)"
         >
           <v-list-item-icon>
             <v-icon>mdi-clock-outline</v-icon>
