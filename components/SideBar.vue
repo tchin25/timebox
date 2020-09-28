@@ -8,35 +8,43 @@
           </h2>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item-group v-model="selected">
-        <v-list-item
-          link
-          v-for="timeboxList in savedTimeboxLists"
-          :key="timeboxList.name"
-          @click="switchTimeboxList(timeboxList.name)"
-        >
-          <v-list-item-icon>
-            <v-icon class="handle">mdi-drag</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ timeboxList.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+      <v-list-item
+        link
+        v-for="timeboxList in savedTimeboxLists"
+        :key="timeboxList.name"
+        @click="switchTimeboxList(timeboxList.name)"
+      >
+        <v-list-item-icon>
+          <v-icon class="handle">mdi-drag</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{ timeboxList.name }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <v-text-field
-            dense
-            label="Add New Timebox List"
-            v-model="newTimebox"
-            :rules="[() => (isNameTaken ? `Name Must Not Be Taken` : true)]"
-          >
-            <template v-slot:append-outer>
-              <v-btn icon color="green" :disabled="isNameTaken">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </template></v-text-field
-          >
+          <v-form ref="form" @submit.prevent="addTimeboxList" lazy-validation>
+            <v-text-field
+              dense
+              label="Add New Timebox List"
+              v-model="newTimebox"
+              :rules="[
+                () => (isNameTaken ? `Name Must Not Be Taken` : true),
+                () => (newTimebox ? true : `Name Must Not Be Empty`)
+              ]"
+            >
+              <template v-slot:append-outer>
+                <v-btn
+                  icon
+                  color="green"
+                  :disabled="isNameTaken || !newTimebox"
+                  type="submit"
+                >
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template></v-text-field
+            >
+          </v-form>
         </v-list-item-content>
       </v-list-item>
       <v-divider></v-divider>
@@ -64,7 +72,6 @@ export default {
   data() {
     return {
       drawer: true,
-      selected: -1,
       newTimebox: null
     };
   },
@@ -78,8 +85,20 @@ export default {
       this.SET_STATUS(statusEnum.STOPPED);
       this.SET_CURRENT_TIMEBOX_LIST(timeboxListName);
     },
+    addTimeboxList() {
+      if (this.$refs.form.validate()) {
+        this.ADD_NEW_TIMEBOX_LIST(this.newTimebox);
+        this.switchTimeboxList(this.newTimebox);
+        this.selected = this.savedTimeboxLists.length - 1;
+        this.newTimebox = null;
+        this.$refs.form.reset();
+      }
+    },
     ...mapMutations("timebox", ["SET_TIMEBOX_LIST", "SET_STATUS"]),
-    ...mapMutations("savedTimeboxes", ["SET_CURRENT_TIMEBOX_LIST"])
+    ...mapMutations("savedTimeboxes", [
+      "SET_CURRENT_TIMEBOX_LIST",
+      "ADD_NEW_TIMEBOX_LIST"
+    ])
   },
   computed: {
     isNameTaken() {
@@ -101,11 +120,16 @@ export default {
       }
       return true;
     },
+    savedTimeboxLists: {
+      get() {
+        return this.$store.state.savedTimeboxes.savedTimeboxLists;
+      },
+      set(value) {
+        this.$store.commit("savedTimeboxes/SET_SAVED_TIMEBOX_LIST", value);
+      }
+    },
     ...mapState("timebox", ["timeboxList"]),
-    ...mapState("savedTimeboxes", [
-      "savedTimeboxLists",
-      "currentTimeboxListName"
-    ]),
+    ...mapState("savedTimeboxes", ["currentTimeboxListName"]),
     ...mapGetters("savedTimeboxes", ["getTimeboxListByName"])
   }
 };

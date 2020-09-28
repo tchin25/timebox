@@ -41,8 +41,11 @@ export const getters = {
 };
 
 export const mutations = {
-  ADD_TIMEBOX_LIST(state, timeboxList) {
-    state.savedTimeboxLists.push(timeboxList);
+  SET_SAVED_TIMEBOX_LIST(state, savedTimeboxLists) {
+    state.savedTimeboxLists = savedTimeboxLists ? savedTimeboxLists : [];
+  },
+  ADD_NEW_TIMEBOX_LIST(state, name) {
+    state.savedTimeboxLists.push({name, timeboxList: []});
   }, 
   SET_CURRENT_TIMEBOX_LIST(state, name) {
     state.currentTimeboxListName = name;
