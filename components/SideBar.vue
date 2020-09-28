@@ -74,7 +74,7 @@ export default {
       let { name: timeboxListName, timeboxList } = this.getTimeboxListByName(
         name
       );
-      this.SET_TIMEBOX_LIST(timeboxList);
+      this.SET_TIMEBOX_LIST([...timeboxList]);
       this.SET_STATUS(statusEnum.STOPPED);
       this.SET_CURRENT_TIMEBOX_LIST(timeboxListName);
     },
