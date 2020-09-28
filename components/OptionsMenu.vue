@@ -1,6 +1,5 @@
 <template>
   <v-card class="mx-auto sidebar-wrapper">
-    <v-navigation-drawer permanent floating right>
       <v-list dense>
         <v-list-item>
           <v-list-item-action>
@@ -10,7 +9,7 @@
             Repeat
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <!-- <v-list-item>
           <v-list-item-action>
             <v-switch></v-switch>
           </v-list-item-action>
@@ -18,8 +17,15 @@
             Mute
           </v-list-item-content>
         </v-list-item>
+        <v-list-item>
+          <v-list-item-action>
+            <v-switch></v-switch>
+          </v-list-item-action>
+          <v-list-item-content>
+            Notifications
+          </v-list-item-content>
+        </v-list-item> -->
       </v-list>
-    </v-navigation-drawer>
   </v-card>
 </template>
 

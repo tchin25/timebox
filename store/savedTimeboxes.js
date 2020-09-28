@@ -1,4 +1,5 @@
 export const state = () => ({
+  currentTimeboxListName: "",
   savedTimeboxLists: [
     {
       name: "Pomodoro",
@@ -33,9 +34,18 @@ export const state = () => ({
   ],
 });
 
+export const getters = {
+  getTimeboxListIndexByName: state => name => {
+    return state.savedTimeboxLists.findIndex(list => list.name == name);
+  }
+};
+
 export const mutations = {
   ADD_TIMEBOX_LIST(state, timeboxList) {
     state.savedTimeboxLists.push(timeboxList);
+  },
+  SET_CURRENT_TIMEBOX_LIST(state, name) {
+    state.currentTimeboxListName = name;
   },
   DELETE_TIMEBOX_LIST(state, name) {
     state.savedTimeboxLists = state.savedTimeboxLists.filter(
@@ -49,7 +59,7 @@ export const mutations = {
     if (index == -1) {
       return;
     }
-    state.savedTimeboxLists[index] = timeboxList;
+    state.savedTimeboxLists.splice(index, 1, timeboxList);
   }
 };
 

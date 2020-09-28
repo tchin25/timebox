@@ -86,7 +86,7 @@ export const actions = {
   },
   nextTimebox({ state, commit, getters }) {
     let index = getters.getTimeboxIndexById(state.currentTimeboxId);
-    if (state.timeboxList.length === 1) {
+    if (state.timeboxList.length === 1 && state.repeat) {
       // Workaround to get repeat working on just 1 timebox
       commit("SET_CURRENT_TIMEBOX", -1);
       setTimeout(() => {
