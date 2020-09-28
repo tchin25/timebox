@@ -67,16 +67,5 @@ export const mutations = {
 };
 
 export const actions = {
-    retrieveSavedTimeboxLists({commit}){
 
-    },
-    updateSavedTimeboxList({state, commit}, timeboxList){
-
-    },
-    deleteSavedTimeboxList({state, commit}, name){
-
-    },
-    addSavedTimedTimeboxList({state, commit}, timeboxList){
-
-    }
 };

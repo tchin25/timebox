@@ -14,12 +14,25 @@
         :key="timeboxList.name"
         @click="switchTimeboxList(timeboxList.name)"
       >
-        <v-list-item-icon>
-          <v-icon class="handle">mdi-drag</v-icon>
-        </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>{{ timeboxList.name }}</v-list-item-title>
         </v-list-item-content>
+        <v-list-item-icon>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                color="red"
+                v-bind="attrs"
+                v-on="on"
+                @click.stop="deleteTimeboxList(timeboxList.name)"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <span>Double-click to delete</span>
+          </v-tooltip>
+        </v-list-item-icon>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
@@ -47,17 +60,6 @@
           </v-form>
         </v-list-item-content>
       </v-list-item>
-      <v-divider></v-divider>
-
-      <v-list-item>
-        <v-list-item-content>
-          <p>Current Timebox List: {{ currentTimeboxListName }}</p>
-          Edited: {{ isCurrentTimeboxListEdited }}
-          <v-btn icon color="green">
-            <v-icon>mdi-content-save</v-icon>
-          </v-btn>
-        </v-list-item-content>
-      </v-list-item>
     </v-list>
   </v-card>
 </template>
@@ -65,7 +67,6 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { statusEnum } from "../assets/enums";
-import { isEqual } from "lodash";
 
 export default {
   name: "side-bar",
@@ -76,14 +77,16 @@ export default {
     };
   },
   methods: {
-    switchTimeboxList(name) {
-      console.log(name);
-      let { name: timeboxListName, timeboxList } = this.getTimeboxListByName(
-        name
-      );
-      this.SET_TIMEBOX_LIST([...timeboxList]);
+    switchTimeboxList(name = "") {
+      console.log("timebox switch " + name);
+      if (!!name) {
+        let { timeboxList } = this.getTimeboxListByName(name);
+        this.SET_TIMEBOX_LIST(timeboxList);
+      } else {
+        this.SET_TIMEBOX_LIST([]);
+      }
+      this.SET_CURRENT_TIMEBOX_LIST(name);
       this.SET_STATUS(statusEnum.STOPPED);
-      this.SET_CURRENT_TIMEBOX_LIST(timeboxListName);
     },
     addTimeboxList() {
       if (this.$refs.form.validate()) {
@@ -94,10 +97,18 @@ export default {
         this.$refs.form.reset();
       }
     },
+    deleteTimeboxList(name) {
+      console.log("deleting " + name);
+      this.DELETE_TIMEBOX_LIST(name);
+      if (name == this.currentTimeboxListName) {
+        this.switchTimeboxList();
+      }
+    },
     ...mapMutations("timebox", ["SET_TIMEBOX_LIST", "SET_STATUS"]),
     ...mapMutations("savedTimeboxes", [
       "SET_CURRENT_TIMEBOX_LIST",
-      "ADD_NEW_TIMEBOX_LIST"
+      "ADD_NEW_TIMEBOX_LIST",
+      "DELETE_TIMEBOX_LIST"
     ])
   },
   computed: {
@@ -106,19 +117,6 @@ export default {
         return true;
       }
       return false;
-    },
-    isCurrentTimeboxListEdited() {
-      let savedTimeboxList = this.getTimeboxListByName(
-        this.currentTimeboxListName
-      );
-      if (!savedTimeboxList) {
-        return false;
-      }
-
-      if (isEqual(this.timeboxList, savedTimeboxList.timeboxList)) {
-        return false;
-      }
-      return true;
     },
     savedTimeboxLists: {
       get() {
@@ -131,7 +129,7 @@ export default {
     ...mapState("timebox", ["timeboxList"]),
     ...mapState("savedTimeboxes", ["currentTimeboxListName"]),
     ...mapGetters("savedTimeboxes", ["getTimeboxListByName"])
-  }
+  },
 };
 </script>
 
@@ -141,5 +139,7 @@ export default {
   top: 5px;
   left: 5px;
   z-index: 1000;
+  width: 300px;
+  transition: all 0.5s;
 }
 </style>
