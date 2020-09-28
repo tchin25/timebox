@@ -35,15 +35,15 @@ export const state = () => ({
 });
 
 export const getters = {
-  getTimeboxListIndexByName: state => name => {
-    return state.savedTimeboxLists.findIndex(list => list.name == name);
+  getTimeboxListByName: state => name => {
+    return state.savedTimeboxLists.find(list => list.name == name);
   }
 };
 
 export const mutations = {
   ADD_TIMEBOX_LIST(state, timeboxList) {
     state.savedTimeboxLists.push(timeboxList);
-  },
+  }, 
   SET_CURRENT_TIMEBOX_LIST(state, name) {
     state.currentTimeboxListName = name;
   },

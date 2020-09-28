@@ -1,19 +1,19 @@
 <template>
   <v-card class="mx-auto sidebar-wrapper">
-    <v-list dense>
+    <v-list>
       <v-list-item>
         <v-list-item-content>
           <h2>
-            Saved Timeboxes
+            Saved Timebox Lists
           </h2>
         </v-list-item-content>
       </v-list-item>
       <v-list-item-group v-model="selected">
         <v-list-item
           link
-          v-for="(timeboxList, index) in savedTimeboxLists"
-          :key="index"
-          @click="switchTimeboxList(index)"
+          v-for="timeboxList in savedTimeboxLists"
+          :key="timeboxList.name"
+          @click="switchTimeboxList(timeboxList.name)"
         >
           <v-list-item-icon>
             <v-icon class="handle">mdi-drag</v-icon>
@@ -23,22 +23,31 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
-
-      <v-divider></v-divider>
-
       <v-list-item>
         <v-list-item-content>
           <v-text-field
             dense
-            prepend-icon="mdi-pencil"
-            :placeholder="currentTimeboxListName"
+            label="Add New Timebox List"
+            v-model="newTimebox"
+            :rules="[() => (isNameTaken ? `Name Must Not Be Taken` : true)]"
           >
             <template v-slot:append-outer>
-              <v-btn icon color="green">
-                <v-icon>mdi-content-save</v-icon>
+              <v-btn icon color="green" :disabled="isNameTaken">
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
             </template></v-text-field
           >
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+
+      <v-list-item>
+        <v-list-item-content>
+          <p>Current Timebox List: {{ currentTimeboxListName }}</p>
+          Edited: {{ isCurrentTimeboxListEdited }}
+          <v-btn icon color="green">
+            <v-icon>mdi-content-save</v-icon>
+          </v-btn>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -48,30 +57,56 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { statusEnum } from "../assets/enums";
+import { isEqual } from "lodash";
+
 export default {
   name: "side-bar",
   data() {
     return {
       drawer: true,
-      selected: -1
+      selected: -1,
+      newTimebox: null
     };
   },
   methods: {
-    switchTimeboxList(index) {
-      //   console.log(index);
-      this.SET_TIMEBOX_LIST(this.savedTimeboxLists[index].timeboxList);
+    switchTimeboxList(name) {
+      console.log(name);
+      let { name: timeboxListName, timeboxList } = this.getTimeboxListByName(
+        name
+      );
+      this.SET_TIMEBOX_LIST(timeboxList);
       this.SET_STATUS(statusEnum.STOPPED);
-      this.SET_CURRENT_TIMEBOX_LIST(this.savedTimeboxLists[index].name);
+      this.SET_CURRENT_TIMEBOX_LIST(timeboxListName);
     },
     ...mapMutations("timebox", ["SET_TIMEBOX_LIST", "SET_STATUS"]),
     ...mapMutations("savedTimeboxes", ["SET_CURRENT_TIMEBOX_LIST"])
   },
   computed: {
+    isNameTaken() {
+      if (this.getTimeboxListByName(this.newTimebox)) {
+        return true;
+      }
+      return false;
+    },
+    isCurrentTimeboxListEdited() {
+      let savedTimeboxList = this.getTimeboxListByName(
+        this.currentTimeboxListName
+      );
+      if (!savedTimeboxList) {
+        return false;
+      }
+
+      if (isEqual(this.timeboxList, savedTimeboxList.timeboxList)) {
+        return false;
+      }
+      return true;
+    },
+    ...mapState("timebox", ["timeboxList"]),
     ...mapState("savedTimeboxes", [
       "savedTimeboxLists",
       "currentTimeboxListName"
     ]),
-    ...mapGetters("savedTimeboxes", ["getTimeboxListIndexByName"])
+    ...mapGetters("savedTimeboxes", ["getTimeboxListByName"])
   }
 };
 </script>
