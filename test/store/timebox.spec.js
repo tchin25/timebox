@@ -29,11 +29,11 @@ describe("timebox/mutations", () => {
         timeboxList: [{ id: 25 }]
       };
       mutations.SET_TIMEBOX_LIST(state);
-      expect(isEqual(state.timeboxList, [])).toBe(true);
+      expect(state.timeboxList).toStrictEqual([]);
       mutations.SET_TIMEBOX_LIST(state, [{ id: 10 }]);
-      expect(isEqual(state.timeboxList, [{ id: 10 }])).toBe(true);
+      expect(state.timeboxList).toStrictEqual([{ id: 10 }]);
       mutations.SET_TIMEBOX_LIST(state, []);
-      expect(isEqual(state.timeboxList, [])).toBe(true);
+      expect(state.timeboxList).toStrictEqual([]);
     });
   });
 
@@ -47,11 +47,11 @@ describe("timebox/mutations", () => {
 
     test("Successfully deletes timeboxes from timeboxList", () => {
       mutations.DELETE_TIMEBOX(state, 25);
-      expect(isEqual(state.timeboxList, [])).toBe(true);
+      expect(state.timeboxList).toStrictEqual([]);
     });
     test("Does not delete when passed invalid id", () => {
       mutations.DELETE_TIMEBOX(state, 10);
-      expect(isEqual(state.timeboxList, [{ id: 25 }])).toBe(true);
+      expect(state.timeboxList).toStrictEqual([{ id: 25 }]);
     });
   });
 
@@ -62,7 +62,7 @@ describe("timebox/mutations", () => {
         toAddId: 1
       };
       mutations.ADD_TIMEBOX(state, { id: 10 });
-      expect(isEqual(state.timeboxList, [{ id: 25 }, { id: 1 }])).toBe(true);
+      expect(state.timeboxList).toStrictEqual([{ id: 25 }, { id: 1 }]);
     });
   });
 
@@ -78,25 +78,19 @@ describe("timebox/mutations", () => {
         index: 0,
         timebox: { id: 25, title: "Title 2" }
       });
-      expect(isEqual(state.timeboxList, [{ id: 25, title: "Title 2" }])).toBe(
-        true
-      );
+      expect(state.timeboxList).toStrictEqual([{ id: 25, title: "Title 2" }]);
     });
     test("Doesn't fail when index is out of range", () => {
       mutations.UPDATE_TIMEBOX(state, {
         index: -1,
         timebox: { id: 25, title: "Title 2" }
       });
-      expect(isEqual(state.timeboxList, [{ id: 25, title: "Title 1" }])).toBe(
-        true
-      );
+      expect(state.timeboxList).toStrictEqual([{ id: 25, title: "Title 1" }]);
       mutations.UPDATE_TIMEBOX(state, {
         index: 2,
         timebox: { id: 25, title: "Title 2" }
       });
-      expect(isEqual(state.timeboxList, [{ id: 25, title: "Title 1" }])).toBe(
-        true
-      );
+      expect(state.timeboxList).toStrictEqual([{ id: 25, title: "Title 1" }]);
     });
   });
 
@@ -157,12 +151,12 @@ describe("timebox/actions", () => {
       };
       const store = new Vuex.Store(vuexStore);
       store.dispatch("updateTimebox", { id: 25, title: "Title 2" });
-      expect(
-        isEqual(store.state.timeboxList, [{ id: 25, title: "Title 2" }])
-      ).toBe(true);
+      expect(store.state.timeboxList).toStrictEqual([
+        { id: 25, title: "Title 2" }
+      ]);
     });
   });
-  
+
   describe("nextTimebox", () => {
     beforeEach(() => {
       vuexStore.state = {
@@ -227,15 +221,12 @@ describe("timebox/actions", () => {
     });
     test("Deleting final timebox sets currentTimeboxId to -1", () => {
       vuexStore.state = {
-        timeboxList: [
-          { id: 5, title: "Title 0" }
-        ],
+        timeboxList: [{ id: 5, title: "Title 0" }],
         currentTimeboxId: 5
       };
       store = new Vuex.Store(vuexStore);
       store.dispatch("deleteTimebox", 5);
       expect(store.state.currentTimeboxId).toBe(-1);
     });
-
   });
 });

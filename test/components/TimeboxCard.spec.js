@@ -2,11 +2,10 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 Vue.use(Vuetify);
 
-import { createLocalVue, mount, shallowMount } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import { state, getters, mutations, actions } from "../../store/timebox";
-import { isEqual } from "lodash";
 import { completionEnum, statusEnum } from "~/assets/enums";
 import TimeboxCard from "~/components/TimeboxCard";
 

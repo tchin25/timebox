@@ -9,10 +9,12 @@
         </v-list-item-content>
       </v-list-item>
       <v-list-item
-        link
         v-for="timeboxList in savedTimeboxLists"
         :key="timeboxList.name"
         @click="switchTimeboxList(timeboxList.name)"
+        :input-value="
+          timeboxList.name === currentTimeboxListName ? true : undefined
+        "
       >
         <v-list-item-content>
           <v-list-item-title>{{ timeboxList.name }}</v-list-item-title>
@@ -129,7 +131,7 @@ export default {
     ...mapState("timebox", ["timeboxList"]),
     ...mapState("savedTimeboxes", ["currentTimeboxListName"]),
     ...mapGetters("savedTimeboxes", ["getTimeboxListByName"])
-  },
+  }
 };
 </script>
 
