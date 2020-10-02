@@ -158,7 +158,9 @@ describe("timebox/actions", () => {
   });
 
   describe("nextTimebox", () => {
+    let playSound;
     beforeEach(() => {
+      playSound = jest.fn();
       vuexStore.state = {
         timeboxList: [
           { id: 25, title: "Title 1" },
@@ -166,13 +168,23 @@ describe("timebox/actions", () => {
           { id: 5, title: "Title 0" }
         ]
       };
+      vuexStore.modules = {
+        alarm: {
+          namespaced: true,
+          actions: {
+            playSound
+          }
+        }
+      };
     });
+
     test("Successfully switches to next timebox in list", () => {
       vuexStore.state.currentTimeboxId = 25;
       const store = new Vuex.Store(vuexStore);
 
       store.dispatch("nextTimebox");
       expect(store.state.currentTimeboxId).toBe(30);
+      expect(playSound.mock.calls.length).toBe(1);
     });
     test("Successfully loops when set to repeat", () => {
       vuexStore.state.repeat = true;
@@ -182,6 +194,7 @@ describe("timebox/actions", () => {
       store.dispatch("nextTimebox");
       expect(store.state.currentTimeboxId).toBe(25);
       expect(store.state.status).not.toBe(statusEnum.FINISHED);
+      expect(playSound.mock.calls.length).toBe(1);
     });
     test("Does not loop when hit end and not set to repeat", () => {
       vuexStore.state.repeat = false;
@@ -191,6 +204,7 @@ describe("timebox/actions", () => {
       store.dispatch("nextTimebox");
       expect(store.state.currentTimeboxId).toBe(-1);
       expect(store.state.status).toBe(statusEnum.FINISHED);
+      expect(playSound.mock.calls.length).toBe(1);
     });
   });
 

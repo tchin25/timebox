@@ -67,18 +67,18 @@ export default {
     },
     mute: {
       get() {
-        return this.$store.state.timebox.mute;
+        return this.$store.state.alarm.mute;
       },
       set(value) {
-        this.$store.commit("timebox/SET_MUTE", value);
+        this.$store.commit("alarm/SET_MUTE", value);
       }
     },
     useCustomAudio: {
       get() {
-        return this.$store.state.timebox.useCustomAudio;
+        return this.$store.state.alarm.useCustomAudio;
       },
       set(value) {
-        this.$store.commit("timebox/SET_USE_CUSTOM_AUDIO", value);
+        this.$store.commit("alarm/SET_USE_CUSTOM_AUDIO", value);
       }
     }
   }

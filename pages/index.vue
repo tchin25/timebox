@@ -3,11 +3,13 @@
     <p class="text-h3">
       Simple Timeboxer
     </p>
-    <div style="position: relative; width: 344px;">
+    <div v-if="!currentTimeboxListName">
+      Select or create a new timebox to get started
+    </div>
+    <div v-else style="position: relative; width: 344px;">
       <status-buttons class="ma-2"></status-buttons>
       <draggable
         v-model="timeboxList"
-        :move="onMoveCallback"
         animation="500"
         ghost-class="ghost"
         draggable=".timeboxList-item"
@@ -47,13 +49,6 @@ export default {
     TimeboxCard,
     AddTimeboxCard
   },
-  methods: {
-    onMoveCallback(evt, originalEvent) {
-      console.log(evt);
-      // return false; — for cancel
-    },
-    ...mapMutations("timebox", ["SET_REPEAT"])
-  },
   computed: {
     timeboxList: {
       get() {
@@ -63,7 +58,7 @@ export default {
         this.$store.commit("timebox/SET_TIMEBOX_LIST", value);
       }
     },
-    ...mapState("timebox", ["repeat"])
+    ...mapState("savedTimeboxes", ["currentTimeboxListName"])
   }
 };
 </script>

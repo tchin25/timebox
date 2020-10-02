@@ -15,7 +15,7 @@ export default {
   methods: {
     readFile(e) {
       console.log(e);
-      this.SET_CUSTOM_AUDIO_NAME(e.name);
+      this.SET_CUSTOM_AUDIO_NAME(e ? e.name : null);
       let reader = new FileReader();
       reader.onload = (e) => {
         let dataURL = e.target.result;
@@ -23,10 +23,10 @@ export default {
       };
       reader.readAsDataURL(e);
     },
-    ...mapMutations("timebox", ["SET_ALARM_AUDIO", "SET_CUSTOM_AUDIO_NAME"])
+    ...mapMutations("alarm", ["SET_ALARM_AUDIO", "SET_CUSTOM_AUDIO_NAME"])
   },
   computed: {
-      ...mapState("timebox", ["customAudioName"])
+      ...mapState("alarm", ["customAudioName"])
   }
 };
 </script>
