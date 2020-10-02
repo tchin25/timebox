@@ -5,6 +5,10 @@ export const state = () => ({
   currentTimeboxId: -1,
   status: statusEnum.STOPPED,
   repeat: true,
+  mute: false,
+  useCustomAudio: false,
+  customAudioName: null,
+  alarmAudio: null,
   remainingTime: 0,
   timeboxList: [],
   toAddId: 0 // Increment every time a timebox is added to prevent id collision
@@ -41,6 +45,18 @@ export const mutations = {
   },
   SET_REPEAT(state, bool) {
     state.repeat = bool;
+  },
+  SET_MUTE(state, bool) {
+    state.mute = bool;
+  },
+  SET_USE_CUSTOM_AUDIO(state, bool) {
+    state.useCustomAudio = bool;
+  },
+  SET_ALARM_AUDIO(state, dataURL) {
+    state.alarmAudio = dataURL;
+  },
+  SET_CUSTOM_AUDIO_NAME(state, name) {
+    state.customAudioName = name;
   },
   SET_STATUS(state, status) {
     switch (status) {
