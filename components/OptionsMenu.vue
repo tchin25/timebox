@@ -2,6 +2,13 @@
   <v-card class="mx-auto sidebar-wrapper">
     <v-list dense>
       <v-list-item>
+        <v-list-item-content>
+          <h2>
+            Global Settings
+          </h2>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
         <v-list-item-action>
           <v-switch v-model="repeat"></v-switch>
         </v-list-item-action>
@@ -44,6 +51,7 @@
 
 <script>
 import AlarmAudioInput from "./AlarmAudioInput";
+
 export default {
   components: {
     AlarmAudioInput
