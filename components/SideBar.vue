@@ -27,7 +27,7 @@
                 color="red"
                 v-bind="attrs"
                 v-on="on"
-                @click.stop="deleteTimeboxList(timeboxList.name)"
+                @dblclick="deleteTimeboxList(timeboxList.name)"
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>

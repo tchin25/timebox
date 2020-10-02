@@ -232,7 +232,7 @@ export default {
       immediate: true
     },
     remainingTime: function(newVal) {
-      if (newVal > this.duration) {
+      if (newVal > this.duration && this.isActive) {
         this.SET_REMAINING_TIME(this.duration);
       }
       if (newVal <= 0 && this.timerInterval) {
