@@ -47,7 +47,7 @@
             block
             depressed
             color="red"
-            @click="status = statusEnum.STOPPED"
+            @click="stopTimebox"
           >
             <span>Stop</span>
             <v-icon right>mdi-stop</v-icon>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { statusEnum } from "../assets/enums";
 
 export default {
@@ -67,7 +68,12 @@ export default {
       statusEnum
     };
   },
-  methods: {},
+  methods: {
+    stopTimebox() {
+      this.status = statusEnum.STOPPED;
+      this.audioObject.pause();
+    }
+  },
   computed: {
     status: {
       get() {
@@ -76,7 +82,8 @@ export default {
       set(value) {
         this.$store.commit("timebox/SET_STATUS", value);
       }
-    }
+    },
+    ...mapState("alarm", ["audioObject"])
   }
 };
 </script>
