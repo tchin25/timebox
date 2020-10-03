@@ -32,11 +32,27 @@
           Use Custom Alarm
         </v-list-item-content>
       </v-list-item>
-      <v-list-item v-if="useCustomAudio">
-        <v-list-item-content>
-          <alarm-audio-input></alarm-audio-input>
-        </v-list-item-content>
-      </v-list-item>
+      <div v-if="useCustomAudio">
+        <v-list-item>
+          <v-list-item-content>
+            <alarm-audio-input></alarm-audio-input>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item v-if="audioObject && isPlaying">
+          <v-list-item-content>
+            <v-btn
+              block
+              outlined
+              depressed
+              dark
+              color="red"
+              @click="audioObject.pause()"
+            >
+              Stop Alarm
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
       <!-- <v-list-item>
           <v-list-item-action>
             <v-switch></v-switch>
@@ -50,6 +66,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 import AlarmAudioInput from "./AlarmAudioInput";
 
 export default {
@@ -80,7 +97,9 @@ export default {
       set(value) {
         this.$store.commit("alarm/SET_USE_CUSTOM_AUDIO", value);
       }
-    }
+    },
+    ...mapState("alarm", ["audioObject", "isPlaying"]),
+    // ...mapGetters("alarm", ["isAudioPlaying"])
   }
 };
 </script>
