@@ -7,11 +7,6 @@ export const state = () => ({
   isPlaying: false
 });
 
-export const getters = {
-  isAudioPlaying: state => {
-    return state.isPlaying;
-  }
-};
 
 export const mutations = {
   SET_MUTE(state, bool) {

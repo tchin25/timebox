@@ -98,8 +98,7 @@ export default {
         this.$store.commit("alarm/SET_USE_CUSTOM_AUDIO", value);
       }
     },
-    ...mapState("alarm", ["audioObject", "isPlaying"]),
-    // ...mapGetters("alarm", ["isAudioPlaying"])
+    ...mapState("alarm", ["audioObject", "isPlaying"])
   }
 };
 </script>
