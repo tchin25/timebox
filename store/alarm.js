@@ -10,10 +10,10 @@ export const state = () => ({
 
 export const mutations = {
   SET_MUTE(state, bool) {
-    state.mute = bool;
+    state.mute = !!bool;
   },
   SET_USE_CUSTOM_AUDIO(state, bool) {
-    state.useCustomAudio = bool;
+    state.useCustomAudio = !!bool;
   },
   SET_ALARM_AUDIO(state, dataURL) {
     state.audioObject = new Audio(dataURL);
@@ -22,7 +22,7 @@ export const mutations = {
     state.customAudioName = name;
   },
   SET_IS_PLAYING(state, bool) {
-    state.isPlaying = bool;
+    state.isPlaying = !!bool;
   }
 };
 
@@ -35,7 +35,6 @@ export const actions = {
       commit("SET_IS_PLAYING", true);
     };
     state.audioObject.onpause = () => {
-      state.audioObject.pause();
       state.audioObject.currentTime = 0;
       commit("SET_IS_PLAYING", false);
     };
