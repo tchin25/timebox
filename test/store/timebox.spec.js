@@ -1,7 +1,6 @@
 import { createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import { getters, mutations, actions } from "../../store/timebox";
-import { isEqual } from "lodash";
 import { statusEnum } from "~/assets/enums";
 
 const localVue = createLocalVue();
@@ -34,6 +33,74 @@ describe("timebox/mutations", () => {
       expect(state.timeboxList).toStrictEqual([{ id: 10 }]);
       mutations.SET_TIMEBOX_LIST(state, []);
       expect(state.timeboxList).toStrictEqual([]);
+    });
+  });
+
+  describe("SET_REPEAT", () => {
+    test("Successfully sets repeat", () => {
+      const state = {
+        repeat: null
+      };
+      mutations.SET_REPEAT(state);
+      expect(state.repeat).toBe(false);
+      mutations.SET_REPEAT(state, true);
+      expect(state.repeat).toBe(true);
+      mutations.SET_REPEAT(state, false);
+      expect(state.repeat).toBe(false);
+    });
+  });
+
+  describe("SET_STATUS", () => {
+    describe("statusEnum.STARTED", () => {
+      test("Successfully sets status", () => {
+        const state = {
+          status: -1,
+          currentTimeboxId: 1,
+          timeboxList: [{ id: 1 }]
+        };
+        mutations.SET_STATUS(state, statusEnum.STARTED);
+        expect(state.status).toBe(statusEnum.STARTED);
+      });
+      test("Successfully sets status and moves currentTimeboxId to first timebox in timeboxList", () => {
+        const state = {
+          status: -1,
+          currentTimeboxId: -1,
+          timeboxList: [{ id: 1 }]
+        };
+        mutations.SET_STATUS(state, statusEnum.STARTED);
+        expect(state.status).toBe(statusEnum.STARTED);
+        expect(state.currentTimeboxId).toBe(1);
+      });
+      test("Does not set status as STARTED if timeboxList is empty", () => {
+        const state = {
+          status: -1,
+          currentTimeboxId: -1,
+          timeboxList: []
+        };
+        mutations.SET_STATUS(state, statusEnum.STARTED);
+        expect(state.status).toBe(statusEnum.STOPPED);
+      });
+    });
+
+    test("Successfully sets statusEnum.PAUSED", () => {
+      const state = {
+        status: 1,
+        currentTimeboxId: 1,
+        timeboxList: [{ id: 1 }]
+      };
+      mutations.SET_STATUS(state, statusEnum.PAUSED);
+      expect(state.status).toBe(statusEnum.PAUSED);
+      expect(state.currentTimeboxId).toBe(1);
+    });
+    test("Successfully sets statusEnum.STOPPED and resets currentTimeboxId", () => {
+      const state = {
+        status: 1,
+        currentTimeboxId: 1,
+        timeboxList: [{ id: 1 }]
+      };
+      mutations.SET_STATUS(state, statusEnum.STOPPED);
+      expect(state.status).toBe(statusEnum.STOPPED);
+      expect(state.currentTimeboxId).toBe(-1);
     });
   });
 
@@ -192,6 +259,21 @@ describe("timebox/actions", () => {
       const store = new Vuex.Store(vuexStore);
 
       store.dispatch("nextTimebox");
+      expect(store.state.currentTimeboxId).toBe(25);
+      expect(store.state.status).not.toBe(statusEnum.FINISHED);
+      expect(playSound.mock.calls.length).toBe(1);
+    });
+    test("Successfully loops when set to repeat with only 1 item in timeboxList", () => {
+      vuexStore.state.repeat = true;
+      vuexStore.state.currentTimeboxId = 25;
+      vuexStore.state.timeboxList = [{ id: 25, title: "Title 1" }];
+      const store = new Vuex.Store(vuexStore);
+
+      jest.useFakeTimers();
+      store.dispatch("nextTimebox");
+      expect(setTimeout).toHaveBeenCalled();
+      expect(store.state.currentTimeboxId).toBe(-1);
+      jest.advanceTimersByTime(100);
       expect(store.state.currentTimeboxId).toBe(25);
       expect(store.state.status).not.toBe(statusEnum.FINISHED);
       expect(playSound.mock.calls.length).toBe(1);

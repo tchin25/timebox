@@ -40,16 +40,16 @@ export const mutations = {
     state.remainingTime = seconds;
   },
   SET_REPEAT(state, bool) {
-    state.repeat = bool;
+    state.repeat = !!bool;
   },
   SET_STATUS(state, status) {
     switch (status) {
       case statusEnum.STARTED:
-        if (state.currentTimeboxId === -1 && state.timeboxList.length > 0) {
-          state.currentTimeboxId = state.timeboxList[0].id;
-        }
-        if (state.timeboxList.length !== 0) {
+        if (state.timeboxList.length > 0) {
           state.status = status;
+          if (state.currentTimeboxId === -1) {
+            state.currentTimeboxId = state.timeboxList[0].id;
+          }
         }
         break;
       case statusEnum.STOPPED:
@@ -95,7 +95,7 @@ export const actions = {
     } else {
       commit("_NEXT_TIMEBOX", index);
     }
-    dispatch("alarm/playSound", null, {root: true});
+    dispatch("alarm/playSound", null, { root: true });
   },
   deleteTimebox({ state, commit, getters }, id) {
     let currentLocation = getters.getTimeboxIndexById(state.currentTimeboxId);
