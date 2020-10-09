@@ -71,7 +71,9 @@ export default {
   methods: {
     stopTimebox() {
       this.status = statusEnum.STOPPED;
-      this.audioObject.pause();
+      if (this.audioObject) {
+        this.audioObject.pause();
+      }
     }
   },
   computed: {
