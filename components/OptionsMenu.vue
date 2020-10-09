@@ -38,7 +38,7 @@
             <alarm-audio-input></alarm-audio-input>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="audioObject && isPlaying">
+        <v-list-item v-if="useCustomAudio && isPlaying">
           <v-list-item-content>
             <v-btn
               block

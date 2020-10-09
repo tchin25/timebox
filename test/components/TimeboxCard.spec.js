@@ -46,6 +46,41 @@ describe("TimeboxCard.vue", () => {
     });
   });
 
+  describe("Methods", () => {
+    const localVue = createLocalVue();
+    localVue.use(Vuex);
+    const store = new Vuex.Store(generateStore());
+
+    const wrapper = shallowMount(TimeboxCard, {
+      propsData: {
+        id: 0,
+        title: "Test Title",
+        duration: 60
+      },
+      data: () => ({
+        form: {
+          title: "Form Title",
+          duration: 30
+        },
+        editing: true
+      }),
+      localVue,
+      store
+    });
+    test("saveTimebox", () => {
+      let updateTimeboxSpy = jest
+        .spyOn(wrapper.vm, "updateTimebox")
+        .mockImplementation(() => {});
+      wrapper.vm.saveTimebox();
+      expect(updateTimeboxSpy).toHaveBeenCalled();
+    });
+    test("resetForm", () => {
+      wrapper.vm.$refs.form.reset = jest.fn();
+      wrapper.vm.resetForm();
+      expect(wrapper.vm.$refs.form.reset).toHaveBeenCalled();
+    });
+  });
+
   describe("Status and Completion", () => {
     let localVue;
     let timeboxList = [{ id: 0 }, { id: 1 }, { id: 2 }];
