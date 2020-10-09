@@ -35,11 +35,13 @@ describe("AlarmAudioInput.vue", () => {
       .mockImplementation(function() {
         this.onload({ target: { result: "" } });
       });
-    wrapper.vm.readFile();
+    wrapper.vm.readFile({size: 5000000});
+    expect(fileReaderSpy).not.toHaveBeenCalled();
 
+    wrapper.vm.readFile({});
     expect(fileReaderSpy).toHaveBeenCalled();
     expect(setAlarmAudio).toHaveBeenCalled();
-    expect(SET_CUSTOM_AUDIO_NAME).toHaveBeenLastCalledWith({}, null);
+    expect(SET_CUSTOM_AUDIO_NAME).toHaveBeenLastCalledWith({}, undefined);
     wrapper.vm.readFile({name: "X"});
     expect(SET_CUSTOM_AUDIO_NAME).toHaveBeenLastCalledWith({}, "X");
   });

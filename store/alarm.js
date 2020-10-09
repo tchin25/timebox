@@ -11,6 +11,7 @@ export const mutations = {
     state.useCustomAudio = !!bool;
   },
   SET_ALARM_AUDIO(state, dataURL) {
+    state.audioData = dataURL;
     state.audioObject = new Audio(dataURL);
   },
   SET_CUSTOM_AUDIO_NAME(state, name) {
@@ -42,12 +43,18 @@ export const actions = {
       commit("SET_IS_PLAYING", false);
     };
   },
-  playSound({ state }) {
+  playSound({ state, dispatch }) {
     if (state.mute) {
       return;
     }
 
     if (state.useCustomAudio && state.audioObject) {
+      
+      // If the audio was loaded by vuex-persist, we need to remake the audio object
+      if (!state.audioObject.currentSrc){
+        dispatch("setAlarmAudio", state.audioData);
+      }
+
       if (state.audioObject.active) {
         state.audioObject.pause();
         state.audioObject.currentTime = 0;

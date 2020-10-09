@@ -110,6 +110,7 @@ describe("alarm/actions", () => {
       customAudioName: null,
       isPlaying: false
     };
+    const dispatchMock = jest.fn();
     const audioPlaySpy = jest
       .spyOn(Audio.prototype, "play")
       .mockImplementation(() => {});
@@ -126,7 +127,7 @@ describe("alarm/actions", () => {
     test("Plays custom audio", () => {
       state.audioObject = new Audio();
       state.useCustomAudio = true;
-      actions.playSound({ state });
+      actions.playSound({ state, dispatch: dispatchMock });
       expect(audioPlaySpy).toHaveBeenCalled();
     });
 
@@ -138,7 +139,7 @@ describe("alarm/actions", () => {
       let audioPauseSpy = jest
         .spyOn(state.audioObject, "pause")
         .mockImplementation(() => {});
-      actions.playSound({ state });
+      actions.playSound({ state, dispatch: dispatchMock });
       expect(state.audioObject.currentTime).toBe(0);
       expect(audioPauseSpy).toHaveBeenCalled();
       expect(audioPlaySpy).toHaveBeenCalled();

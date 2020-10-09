@@ -13,6 +13,7 @@ export const defaultState = () => ({
   alarm: {
     mute: false,
     audioObject: null,
+    audioData: null,
     useCustomAudio: false,
     customAudioName: null,
     isPlaying: false

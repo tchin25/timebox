@@ -24,4 +24,4 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 ## Test Coverage
 | Statements                | Branches                | Functions                | Lines                |
 | ------------------------- | ----------------------- | ------------------------ | -------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-78.6%25-red.svg) | ![Branches](https://img.shields.io/badge/Coverage-79.59%25-red.svg) | ![Functions](https://img.shields.io/badge/Coverage-84.81%25-yellow.svg) | ![Lines](https://img.shields.io/badge/Coverage-78.3%25-red.svg) |
+| ![Statements](https://img.shields.io/badge/Coverage-77.09%25-red.svg) | ![Branches](https://img.shields.io/badge/Coverage-78.85%25-red.svg) | ![Functions](https://img.shields.io/badge/Coverage-80.72%25-yellow.svg) | ![Lines](https://img.shields.io/badge/Coverage-76.79%25-red.svg) |
