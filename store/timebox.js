@@ -1,14 +1,8 @@
+import { defaultState } from "./index";
 import { statusEnum } from "../assets/enums";
 
 /* istanbul ignore next */
-export const state = () => ({
-  currentTimeboxId: -1,
-  status: statusEnum.STOPPED,
-  repeat: true,
-  remainingTime: 0,
-  timeboxList: [],
-  toAddId: 0 // Increment every time a timebox is added to prevent id collision
-});
+export const state = () => defaultState().timebox;
 
 export const getters = {
   getTimeboxIndexById: state => id => {
@@ -76,6 +70,11 @@ export const mutations = {
     } else {
       state.currentTimeboxId = state.timeboxList[currentTimeboxIndex + 1].id;
     }
+  },
+  RESET_STATE(state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState().timebox);
   }
 };
 

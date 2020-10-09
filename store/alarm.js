@@ -1,12 +1,7 @@
-/* istanbul ignore next */
-export const state = () => ({
-  mute: false,
-  audioObject: null,
-  useCustomAudio: false,
-  customAudioName: null,
-  isPlaying: false
-});
+import { defaultState } from "./index";
 
+/* istanbul ignore next */
+export const state = () => defaultState().alarm;
 
 export const mutations = {
   SET_MUTE(state, bool) {
@@ -23,6 +18,11 @@ export const mutations = {
   },
   SET_IS_PLAYING(state, bool) {
     state.isPlaying = !!bool;
+  },
+  RESET_STATE(state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState().alarm);
   }
 };
 

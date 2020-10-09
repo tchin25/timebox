@@ -46,7 +46,7 @@ export default {
   */
   plugins: [
     { src: '@/plugins/vuedraggable'} ,
-    // { src: '~/plugins/vuex-persist', ssr: false }
+    { src: '~/plugins/vuex-persist', ssr: false }
   ],
   /*
   ** Auto import components

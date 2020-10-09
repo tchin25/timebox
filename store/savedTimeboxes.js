@@ -1,39 +1,7 @@
+import { defaultState } from "./index";
+
 /* istanbul ignore next */
-export const state = () => ({
-  currentTimeboxListName: "",
-  savedTimeboxLists: [
-    {
-      name: "Pomodoro",
-      timeboxList: [
-        {
-          id: 0,
-          title: "Work",
-          duration: 1500,
-        },
-        {
-          id: 1,
-          title: "Rest",
-          duration: 300,
-        }
-      ]
-    },
-    {
-      name: "Yoga MIA",
-      timeboxList: [
-        {
-          id: 0,
-          title: "Immersion",
-          duration: 300,
-        },
-        {
-          id: 1,
-          title: "SRS",
-          duration: 300,
-        }
-      ]
-    }
-  ],
-});
+export const state = () => defaultState().savedTimeboxes;
 
 export const getters = {
   getTimeboxListByName: state => name => {
@@ -46,8 +14,8 @@ export const mutations = {
     state.savedTimeboxLists = savedTimeboxLists ? savedTimeboxLists : [];
   },
   ADD_NEW_TIMEBOX_LIST(state, name) {
-    state.savedTimeboxLists.push({name, timeboxList: []});
-  }, 
+    state.savedTimeboxLists.push({ name, timeboxList: [] });
+  },
   SET_CURRENT_TIMEBOX_LIST(state, name) {
     state.currentTimeboxListName = name;
   },
@@ -64,9 +32,12 @@ export const mutations = {
       return;
     }
     state.savedTimeboxLists.splice(index, 1, timeboxList);
+  },
+  RESET_STATE(state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState().savedTimeboxes);
   }
 };
 
-export const actions = {
-
-};
+export const actions = {};
