@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <side-bar></side-bar>
-    <options-menu></options-menu>
     <v-main>
       <v-container>
         <nuxt />
@@ -14,13 +12,8 @@
 </template>
 
 <script>
-import SideBar from "../components/SideBar";
-import OptionsMenu from "../components/OptionsMenu";
 export default {
-  components: {
-    SideBar,
-    OptionsMenu
-  },
+  components: {},
   data() {
     return {};
   }

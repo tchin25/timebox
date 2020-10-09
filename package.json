@@ -8,7 +8,10 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "test": "jest",
-    "make-badges": "istanbul-badges-readme"
+    "make-badges": "istanbul-badges-readme",
+    "build:gh-pages": "cross-env DEPLOY_ENV=GH_PAGES nuxt build",
+    "generate:gh-pages": "cross-env DEPLOY_ENV=GH_PAGES nuxt build && cross-env DEPLOY_ENV=GH_PAGES nuxt generate",
+    "deploy": "gh-pages -d dist -t"
   },
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.0-beta.20",
@@ -23,6 +26,8 @@
     "@vue/test-utils": "^1.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.3.0",
+    "cross-env": "^7.0.2",
+    "gh-pages": "^3.1.0",
     "istanbul-badges-readme": "^1.0.5",
     "jest": "^26.4.2",
     "vue-jest": "^3.0.4"
