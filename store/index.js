@@ -44,7 +44,7 @@ export const defaultState = () => ({
         ]
       },
       {
-        name: "Yoga MIA",
+        name: "Yoga Timebox",
         timeboxList: [
           {
             id: 0,

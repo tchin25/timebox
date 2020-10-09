@@ -3,6 +3,7 @@
     <p class="text-h3">
       Simple Timeboxer
     </p>
+    <client-only placeholder="Loading...">
     <div v-if="!$vuetify.breakpoint.mobile">
       Sorry! This app doesn't work on mobile.
     </div>
@@ -42,6 +43,7 @@
         </draggable>
       </div>
     </div>
+    </client-only>
   </div>
 </template>
 
