@@ -80,18 +80,15 @@ export default {
   background: #c8ebfb;
 }
 
-.timeboxList-item {
-  transition: all 0.75s;
-}
-
 .timeboxList-move {
-  transition: all 0.5s;
+  transition: all 0.5s !important;
 }
 .timeboxList-enter,
 .timeboxList-leave-to {
-  opacity: 0;
+  opacity: 0 !important;
 }
+
 .timeboxList-leave-active {
-  position: absolute;
+  position: absolute !important;
 }
 </style>
