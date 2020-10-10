@@ -213,14 +213,22 @@ describe("timebox/actions", () => {
 
   describe("updateTimebox", () => {
     test("Successfully updates timebox", () => {
-      vuexStore.state = {
+      let state = {
         timeboxList: [{ id: 25, title: "Title 1" }]
       };
-      const store = new Vuex.Store(vuexStore);
-      store.dispatch("updateTimebox", { id: 25, title: "Title 2" });
-      expect(store.state.timeboxList).toStrictEqual([
-        { id: 25, title: "Title 2" }
-      ]);
+      let commitMock = jest.fn();
+      actions.updateTimebox({
+        rootState: {
+          savedTimeboxes: {
+            currentTimeboxListName: ""
+          }
+        },
+        state,
+        getters,
+        commit: commitMock
+      }, { id: 25, title: "Title 2" });
+      expect(commitMock.mock.calls[0][0]).toBe("UPDATE_TIMEBOX");
+      expect(commitMock.mock.calls[1][0]).toBe("savedTimeboxes/UPDATE_TIMEBOX_LIST");
     });
   });
 
