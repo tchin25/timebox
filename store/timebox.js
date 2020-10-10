@@ -79,9 +79,17 @@ export const mutations = {
 };
 
 export const actions = {
-  updateTimebox({ commit, getters }, timebox) {
+  updateTimebox({ rootState, state, commit, getters }, timebox) {
     let index = getters.getTimeboxIndexById(timebox.id);
     commit("UPDATE_TIMEBOX", { index, timebox });
+    commit(
+      "savedTimeboxes/UPDATE_TIMEBOX_LIST",
+      {
+        name: rootState.savedTimeboxes.currentTimeboxListName,
+        timeboxList: state.timeboxList
+      },
+      { root: true }
+    );
   },
   nextTimebox({ state, commit, dispatch, getters }) {
     let index = getters.getTimeboxIndexById(state.currentTimeboxId);
