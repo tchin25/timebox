@@ -1,5 +1,11 @@
 import { statusEnum } from "../assets/enums";
 
+// Hardcode database version so we can check vuex-persist if they are using an old version
+const DATABASE_VERSION = "1.0.0";
+export const state = () => ({
+  databaseVersion: DATABASE_VERSION
+});
+
 export const actions = {
   resetState({ commit }) {
     commit("timebox/RESET_STATE", defaultState().timebox);

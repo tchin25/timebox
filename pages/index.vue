@@ -89,9 +89,9 @@ export default {
   background: #c8ebfb;
 }
 
-.timeboxList-move {
+/* .timeboxList-move {
   transition: all 0.5s !important;
-}
+} */
 .timeboxList-enter,
 .timeboxList-leave-to {
   opacity: 0 !important;
