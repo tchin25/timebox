@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-container>
+      <v-container style="padding-bottom: 2rem">
         <nuxt />
       </v-container>
     </v-main>

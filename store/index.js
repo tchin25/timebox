@@ -30,7 +30,7 @@ export const defaultState = () => ({
     repeat: true,
     remainingTime: 0,
     timeboxList: [],
-    toAddId: 0 // Increment every time a timebox is added to prevent id collision
+    toAddId: 4 // Increment every time a timebox is added to prevent id collision
   },
   savedTimeboxes: {
     currentTimeboxListName: "",
@@ -51,15 +51,15 @@ export const defaultState = () => ({
         ]
       },
       {
-        name: "Yoga Timebox",
+        name: "Immersion/SRS Timebox",
         timeboxList: [
           {
-            id: 0,
+            id: 2,
             title: "Immersion",
             duration: 300
           },
           {
-            id: 1,
+            id: 3,
             title: "SRS",
             duration: 300
           }
