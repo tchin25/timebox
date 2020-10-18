@@ -33,6 +33,13 @@
         </div>
       </v-card-text>
       <v-card-actions>
+        <tooltip-button
+          :buttonAttributes="{ icon: true, disabled: isActive, color: 'black' }"
+          @click="() => {}"
+        >
+          <v-icon>mdi-sync</v-icon>
+          <template #tooltip>Switch to this timebox</template>
+        </tooltip-button>
         <v-spacer />
         <v-btn icon v-if="!isActive && editing" color="green" type="submit">
           <v-icon>mdi-content-save</v-icon>
@@ -69,11 +76,13 @@ import momentDurationFormatSetup from "moment-duration-format";
 import { statusEnum, completionEnum } from "../assets/enums";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import DurationPicker from "./DurationPicker";
+import TooltipButton from "./TooltipButton";
 
 export default {
   name: "timebox-card",
   components: {
-    DurationPicker
+    DurationPicker,
+    TooltipButton
   },
   props: {
     id: {
