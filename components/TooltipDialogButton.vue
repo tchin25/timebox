@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip v-bind="tooltipAttribules">
+  <v-tooltip v-bind="tooltipAttributes">
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="{ ...attrs, ...buttonAttributes }"
@@ -48,7 +48,7 @@ export default {
       type: Object,
       default: () => ({})
     },
-    tooltipAttribules: {
+    tooltipAttributes: {
       type: Object,
       default: () => ({
         bottom: true

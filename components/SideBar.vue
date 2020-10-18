@@ -20,20 +20,39 @@
           <v-list-item-title>{{ timeboxList.name }}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-icon>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                icon
-                color="red"
-                v-bind="attrs"
-                v-on="on"
-                @dblclick="deleteTimeboxList(timeboxList.name)"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+          <tooltip-dialog-button
+            :buttonAttributes="{ icon: true, color: 'red'}"
+            :dialogAttributes="{ width: 290 }"
+          >
+            <template #dialog="{on}">
+              <v-card>
+                <v-card-title class="headline">
+                  Confirm
+                </v-card-title>
+                <v-card-text>This will delete your timebox list</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="red"
+                    text
+                    @click="
+                      () => {
+                        on.click();
+                        deleteTimeboxList(timeboxList.name);
+                      }
+                    "
+                  >
+                    Delete
+                  </v-btn>
+                  <v-btn color="green" outlined v-on="on">
+                    Go Back
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
             </template>
-            <span>Double-click to delete</span>
-          </v-tooltip>
+            <v-icon>mdi-delete</v-icon>
+            <template #tooltip> <span>Delete timebox list</span></template>
+          </tooltip-dialog-button>
         </v-list-item-icon>
       </v-list-item>
       <v-list-item>
@@ -67,11 +86,15 @@
 </template>
 
 <script>
+import TooltipDialogButton from "../components/TooltipDialogButton";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { statusEnum } from "../assets/enums";
 
 export default {
   name: "side-bar",
+  components: {
+    TooltipDialogButton
+  },
   data() {
     return {
       drawer: true,

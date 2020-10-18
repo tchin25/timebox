@@ -10,27 +10,45 @@
         <v-card-title class="">
           <v-spacer></v-spacer>
 
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="red"
-                v-bind="attrs"
-                v-on="on"
-                text
-                x-small
-                @dblclick="hardReset"
-              >
-                <v-icon left>
-                  mdi-restore
-                </v-icon>
-                Hard Reset
-              </v-btn>
+          <tooltip-dialog-button
+            :tooltipAttributes="{ top: true }"
+            :buttonAttributes="{ text: true, color: 'red', 'x-small': true }"
+            :dialogAttributes="{ width: 290 }"
+          >
+            <template #dialog="{on}">
+              <v-card>
+                <v-card-title class="headline">
+                  Confirm
+                </v-card-title>
+                <v-card-text>This will wipe all local data</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="red"
+                    text
+                    @click="
+                      () => {
+                        on.click();
+                        hardReset();
+                      }
+                    "
+                  >
+                    Wipe Data
+                  </v-btn>
+                  <v-btn color="green" outlined v-on="on">
+                    Go Back
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
             </template>
-            <span
-              >Use if website completely breaks<br />
-              Double-click to use</span
+            <v-icon left>
+              mdi-restore
+            </v-icon>
+            Hard Reset
+            <template #tooltip>
+              <span>Use if website completely breaks</span></template
             >
-          </v-tooltip>
+          </tooltip-dialog-button>
         </v-card-title>
 
         <v-card-actions class="py-2">
@@ -58,8 +76,12 @@
 </template>
 
 <script>
+import TooltipDialogButton from "../components/TooltipDialogButton";
+
 export default {
-  components: {},
+  components: {
+    TooltipDialogButton
+  },
   data() {
     return {};
   },
