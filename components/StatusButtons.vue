@@ -1,59 +1,37 @@
 <template>
   <v-card class="mx-auto" flat max-width="100%">
     <div v-if="status != statusEnum.STARTED">
-      <v-row no-gutters>
-        <v-col>
-          <v-btn
-            block
-            depressed
-            color="green"
-            :class="status === statusEnum.PAUSED ? 'button-left' : ''"
-            @click="status = statusEnum.STARTED"
-          >
-            <span>Start</span>
-            <v-icon right>mdi-play</v-icon>
-          </v-btn>
-        </v-col>
-        <v-col v-if="status === statusEnum.PAUSED">
-          <v-btn
-            class="button-right"
-            block
-            depressed
-            color="red"
-            @click="status = statusEnum.STOPPED"
-          >
-            <span>Stop</span>
-            <v-icon right>mdi-stop</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
+      <tooltip-button
+        :buttonAttributes="{ fab: true, dark: true, color: 'green' }"
+        @click="status = statusEnum.STARTED"
+      >
+        <v-icon>mdi-play</v-icon>
+        <template #tooltip>Start timer</template>
+      </tooltip-button>
+      <tooltip-button
+        v-if="status === statusEnum.PAUSED"
+        :buttonAttributes="{ fab: true, dark: true, color: 'red' }"
+        @click="stopTimebox"
+      >
+        <v-icon>mdi-stop</v-icon>
+        <template #tooltip>Stop timer</template>
+      </tooltip-button>
     </div>
     <div v-else>
-      <v-row no-gutters>
-        <v-col>
-          <v-btn
-            class="button-left"
-            block
-            outlined
-            @click="status = statusEnum.PAUSED"
-          >
-            <span>Pause</span>
-            <v-icon right>mdi-pause</v-icon>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-btn
-            class="button-right"
-            block
-            depressed
-            color="red"
-            @click="stopTimebox"
-          >
-            <span>Stop</span>
-            <v-icon right>mdi-stop</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
+      <tooltip-button
+        :buttonAttributes="{ fab: true, dark: true, color: 'yellow' }"
+        @click="status = statusEnum.PAUSED"
+      >
+        <v-icon>mdi-pause</v-icon>
+        <template #tooltip>Pause timer</template>
+      </tooltip-button>
+      <tooltip-button
+        :buttonAttributes="{ fab: true, dark: true, color: 'red' }"
+        @click="stopTimebox"
+      >
+        <v-icon>mdi-stop</v-icon>
+        <template #tooltip>Stop timer</template>
+      </tooltip-button>
     </div>
   </v-card>
 </template>
@@ -61,8 +39,10 @@
 <script>
 import { mapState } from "vuex";
 import { statusEnum } from "../assets/enums";
+import TooltipButton from "./TooltipButton";
 
 export default {
+  components: { TooltipButton },
   data() {
     return {
       statusEnum
@@ -71,7 +51,7 @@ export default {
   methods: {
     stopTimebox() {
       this.status = statusEnum.STOPPED;
-      if (this.audioObject) {
+      if (!!this.audioObject.currentSrc) {
         this.audioObject.pause();
       }
     }

@@ -37,7 +37,7 @@
           :buttonAttributes="{ icon: true, disabled: isActive, color: 'black' }"
           @click="switchTimebox"
         >
-          <v-icon>mdi-sync</v-icon>
+          <v-icon>mdi-swap-horizontal</v-icon>
           <template #tooltip>Switch to this timebox</template>
         </tooltip-button>
         <v-spacer />

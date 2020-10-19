@@ -24,7 +24,7 @@ export default {
       // console.log(e);
 
       // Limit file size to under 5 MB so that we don't hit localStorage limit
-      if (!e || e.size > 400000) {
+      if (!e || e.size > 4000000) {
         return;
       }
       this.SET_CUSTOM_AUDIO_NAME(e ? e.name : null);
