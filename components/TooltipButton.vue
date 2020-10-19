@@ -3,8 +3,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="{ ...attrs, ...buttonAttributes }"
-        v-on="on"
-        @click="$emit('click')"
+        v-on="{ ...on, ...$listeners }"
       >
         <slot>
           Button
@@ -31,7 +30,7 @@ export default {
         bottom: true
       })
     }
-  }
+  },
 };
 </script>
 

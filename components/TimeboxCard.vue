@@ -35,7 +35,7 @@
       <v-card-actions>
         <tooltip-button
           :buttonAttributes="{ icon: true, disabled: isActive, color: 'black' }"
-          @click="() => {}"
+          @click="switchTimebox"
         >
           <v-icon>mdi-sync</v-icon>
           <template #tooltip>Switch to this timebox</template>
@@ -108,8 +108,8 @@ export default {
       statusEnum
     };
   },
-  mounted() {
-    // console.log(this.isCompleted)
+  beforeDestroy() {
+    clearInterval(this.timerInterval);
   },
   methods: {
     saveTimebox() {
@@ -124,7 +124,11 @@ export default {
       this.$refs.form.reset();
       this.editing = false;
     },
-    ...mapMutations("timebox", ["SET_REMAINING_TIME"]),
+    switchTimebox() {
+      this.SET_CURRENT_TIMEBOX(this.id);
+      this.SET_REMAINING_TIME(this.duration);
+    },
+    ...mapMutations("timebox", ["SET_REMAINING_TIME", "SET_CURRENT_TIMEBOX"]),
     ...mapActions("timebox", ["updateTimebox", "nextTimebox", "deleteTimebox"])
   },
   computed: {
@@ -194,6 +198,9 @@ export default {
           if (this.remainingTime <= 0) {
             this.SET_REMAINING_TIME(this.duration);
           }
+        } else {
+          clearInterval(this.timerInterval);
+          this.timerInterval = null;
         }
       },
       immediate: true
@@ -201,7 +208,7 @@ export default {
     status: function(newVal) {
       switch (newVal) {
         case statusEnum.STARTED:
-          if (this.isActive) {
+          if (this.isActive && !this.timerInterval) {
             this.timerInterval = setInterval(
               () => this.SET_REMAINING_TIME(this.remainingTime - 1),
               1000
@@ -210,11 +217,13 @@ export default {
           break;
         case statusEnum.PAUSED:
           clearInterval(this.timerInterval);
+          this.timerInterval = null;
           break;
         case statusEnum.STOPPED:
           this.SET_REMAINING_TIME(this.duration);
         case statusEnum.FINISHED:
           clearInterval(this.timerInterval);
+          this.timerInterval = null;
           break;
       }
     },
