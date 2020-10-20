@@ -39,6 +39,19 @@
         <template #tooltip>Stop timer</template>
       </tooltip-button>
     </template>
+    <template v-if="useCustomAudio && isPlaying">
+      <tooltip-button
+        :buttonAttributes="{
+          ...sharedButtonAttributes,
+          color: 'red',
+          outlined: true
+        }"
+        @click="audioObject.pause()"
+      >
+        <v-icon>mdi-bell-off-outline</v-icon>
+        <template #tooltip>Stop alarm</template>
+      </tooltip-button>
+    </template>
   </div>
 </template>
 
@@ -61,10 +74,10 @@ export default {
   },
   methods: {
     stopTimebox() {
-      this.status = statusEnum.STOPPED;
       if (!!this.audioObject.currentSrc) {
         this.audioObject.pause();
       }
+      this.status = statusEnum.STOPPED;
     }
   },
   computed: {
@@ -76,7 +89,7 @@ export default {
         this.$store.commit("timebox/SET_STATUS", value);
       }
     },
-    ...mapState("alarm", ["audioObject"])
+    ...mapState("alarm", ["audioObject", "useCustomAudio", "isPlaying"])
   }
 };
 </script>
@@ -85,7 +98,6 @@ export default {
 .buttons-wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto;
   grid-gap: 10px;
 }
 </style>

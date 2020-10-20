@@ -38,20 +38,6 @@
             <alarm-audio-input></alarm-audio-input>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="useCustomAudio && isPlaying">
-          <v-list-item-content>
-            <v-btn
-              block
-              outlined
-              depressed
-              dark
-              color="red"
-              @click="audioObject.pause()"
-            >
-              Stop Alarm
-            </v-btn>
-          </v-list-item-content>
-        </v-list-item>
       </div>
       <!-- <v-list-item>
           <v-list-item-action>
@@ -98,7 +84,6 @@ export default {
         this.$store.commit("alarm/SET_USE_CUSTOM_AUDIO", value);
       }
     },
-    ...mapState("alarm", ["audioObject", "isPlaying"])
   }
 };
 </script>
