@@ -1,8 +1,11 @@
 <template>
-  <v-card class="mx-auto" flat max-width="100%">
-    <div v-if="status != statusEnum.STARTED">
+  <div class="mx-auto buttons-wrapper">
+    <template v-if="status != statusEnum.STARTED">
       <tooltip-button
-        :buttonAttributes="{ fab: true, dark: true, color: 'green' }"
+        :buttonAttributes="{
+          ...sharedButtonAttributes,
+          color: 'green'
+        }"
         @click="status = statusEnum.STARTED"
       >
         <v-icon>mdi-play</v-icon>
@@ -10,30 +13,33 @@
       </tooltip-button>
       <tooltip-button
         v-if="status === statusEnum.PAUSED"
-        :buttonAttributes="{ fab: true, dark: true, color: 'red' }"
+        :buttonAttributes="{ ...sharedButtonAttributes, color: 'red' }"
         @click="stopTimebox"
       >
         <v-icon>mdi-stop</v-icon>
         <template #tooltip>Stop timer</template>
       </tooltip-button>
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
       <tooltip-button
-        :buttonAttributes="{ fab: true, dark: true, color: 'yellow' }"
+        :buttonAttributes="{
+          ...sharedButtonAttributes,
+          color: 'yellow'
+        }"
         @click="status = statusEnum.PAUSED"
       >
         <v-icon>mdi-pause</v-icon>
         <template #tooltip>Pause timer</template>
       </tooltip-button>
       <tooltip-button
-        :buttonAttributes="{ fab: true, dark: true, color: 'red' }"
+        :buttonAttributes="{ ...sharedButtonAttributes, color: 'red' }"
         @click="stopTimebox"
       >
         <v-icon>mdi-stop</v-icon>
         <template #tooltip>Stop timer</template>
       </tooltip-button>
-    </div>
-  </v-card>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -45,7 +51,12 @@ export default {
   components: { TooltipButton },
   data() {
     return {
-      statusEnum
+      statusEnum,
+      sharedButtonAttributes: {
+        fab: true,
+        dark: true,
+        elevation: 2
+      }
     };
   },
   methods: {
@@ -71,12 +82,10 @@ export default {
 </script>
 
 <style scoped>
-.button-left {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.button-right {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.buttons-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  grid-gap: 10px;
 }
 </style>

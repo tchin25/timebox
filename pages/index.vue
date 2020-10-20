@@ -15,7 +15,7 @@
         </div>
 
         <div v-else style="position: relative; width: 344px;">
-          <status-buttons class="ma-2"></status-buttons>
+          <status-buttons class="status-buttons"></status-buttons>
           <draggable
             v-model="timeboxList"
             animation="500"
@@ -70,13 +70,10 @@ export default {
       },
       set(value) {
         this.$store.commit("timebox/SET_TIMEBOX_LIST", value);
-        this.$store.commit(
-          "savedTimeboxes/UPDATE_TIMEBOX_LIST",
-          {
-            name: this.$store.state.savedTimeboxes.currentTimeboxListName,
-            timeboxList: value
-          }
-        );
+        this.$store.commit("savedTimeboxes/UPDATE_TIMEBOX_LIST", {
+          name: this.$store.state.savedTimeboxes.currentTimeboxListName,
+          timeboxList: value
+        });
       }
     },
     ...mapState("savedTimeboxes", ["currentTimeboxListName"])
@@ -99,5 +96,11 @@ export default {
 
 .timeboxList-leave-active {
   position: absolute !important;
+}
+
+.status-buttons {
+  position: absolute;
+  top: 0;
+  right: -70px;
 }
 </style>
