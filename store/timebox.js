@@ -104,7 +104,7 @@ export const actions = {
     }
     dispatch("alarm/playSound", null, { root: true });
   },
-  deleteTimebox({ state, commit, getters }, id) {
+  deleteTimebox({ rootState, state, commit, getters }, id) {
     let currentLocation = getters.getTimeboxIndexById(state.currentTimeboxId);
     let deleteLocation = getters.getTimeboxIndexById(id);
     if (currentLocation === deleteLocation) {
@@ -119,5 +119,13 @@ export const actions = {
     }
 
     commit("DELETE_TIMEBOX", id);
+    commit(
+      "savedTimeboxes/UPDATE_TIMEBOX_LIST",
+      {
+        name: rootState.savedTimeboxes.currentTimeboxListName,
+        timeboxList: state.timeboxList
+      },
+      { root: true }
+    );
   }
 };

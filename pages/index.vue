@@ -27,7 +27,8 @@
             :componentData="{
               props: {
                 type: 'transition',
-                name: 'timeboxList'
+                name: 'timeboxList',
+                appear: true
               }
             }"
           >
@@ -92,6 +93,11 @@ export default {
 .timeboxList-enter,
 .timeboxList-leave-to {
   opacity: 0 !important;
+}
+
+.timeboxList-enter-active,
+.timeboxList-leave-active {
+  transition: opacity 0.3s ease !important;
 }
 
 .timeboxList-leave-active {
