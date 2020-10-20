@@ -41,25 +41,6 @@ describe("OptionsMenu.vue", () => {
     };
   });
 
-  test("Stop Alarm button displays when custom audio is playing", () => {
-    let wrapper = mount(OptionsMenu, {
-      store: new Vuex.Store(store)
-    });
-    expect(wrapper.text()).not.toContain("Stop Alarm");
-
-    store.modules.alarm.state = {
-      audioObject: new Audio(),
-      isPlaying: true,
-      mute: false,
-      useCustomAudio: true
-    };
-    wrapper = mount(OptionsMenu, {
-      store: new Vuex.Store(store)
-    });
-
-    expect(wrapper.text()).toContain("Stop Alarm");
-  });
-
   test("Computed properties call correct mutations", () => {
     let wrapper = mount(OptionsMenu, {
       store: new Vuex.Store(store)

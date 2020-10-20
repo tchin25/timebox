@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 import { mount } from "@vue/test-utils";
 import StatusButtons from "~/components/StatusButtons";
+import TooltipButton from "~/components/TooltipButton";
 import { statusEnum } from "~/assets/enums";
 
 describe("StatusButtons.vue", () => {
@@ -36,39 +37,63 @@ describe("StatusButtons.vue", () => {
     const wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });
-    expect(wrapper.text()).toContain("Start");
+    let buttons = wrapper.findAllComponents(TooltipButton);
+    expect(buttons.length).toBe(1);
+    expect(buttons.at(0).props().buttonAttributes.alt).toBe("Start");
   });
   test("Start button shows when status is FINISHED", () => {
     store.modules.timebox.state.status = statusEnum.FINISHED;
     const wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });
-    expect(wrapper.text()).toContain("Start");
+    let buttons = wrapper.findAllComponents(TooltipButton);
+    expect(buttons.length).toBe(1);
+    expect(buttons.at(0).props().buttonAttributes.alt).toBe("Start");
   });
   test("Start and Stop button shows when status is PAUSED", () => {
     store.modules.timebox.state.status = statusEnum.PAUSED;
     const wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });
-    expect(wrapper.text()).toContain("Start");
-    expect(wrapper.text()).toContain("Stop");
+    let buttons = wrapper.findAllComponents(TooltipButton);
+    expect(buttons.length).toBe(2);
+    expect(buttons.at(0).props().buttonAttributes.alt).toBe("Start");
+    expect(buttons.at(1).props().buttonAttributes.alt).toBe("Stop");
   });
   test("Pause and Stop button shows when status is STARTED", () => {
     store.modules.timebox.state.status = statusEnum.STARTED;
     const wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });
-    expect(wrapper.text()).toContain("Pause");
-    expect(wrapper.text()).toContain("Stop");
+    let buttons = wrapper.findAllComponents(TooltipButton);
+    expect(buttons.length).toBe(2);
+    expect(buttons.at(0).props().buttonAttributes.alt).toBe("Pause");
+    expect(buttons.at(1).props().buttonAttributes.alt).toBe("Stop");
+  });
+
+  test("Stop alarm button is shown when useCustomAudio and isPlaying is true", () => {
+    store.modules.timebox.state.status = statusEnum.STARTED;
+    store.modules.alarm.state.useCustomAudio = true;
+    store.modules.alarm.state.isPlaying = true;
+    const wrapper = mount(StatusButtons, {
+      store: new Vuex.Store(store)
+    });
+    let buttons = wrapper.findAllComponents(TooltipButton);
+    expect(buttons.at(buttons.length - 1).props().buttonAttributes.alt).toBe(
+      "Stop Alarm"
+    );
   });
 
   test("stopTimebox() Method", () => {
     store.modules.timebox.state.status = statusEnum.STARTED;
-    let setStatusSpy = jest
-      .spyOn(store.modules.timebox.mutations, "SET_STATUS");
+    let setStatusSpy = jest.spyOn(
+      store.modules.timebox.mutations,
+      "SET_STATUS"
+    );
     let audioPauseSpy = jest
       .spyOn(Audio.prototype, "pause")
       .mockImplementation(() => {});
+    jest.spyOn(Audio.prototype, "currentSrc", "get").mockReturnValue(true);
     let wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });

@@ -4,7 +4,8 @@
       <tooltip-button
         :buttonAttributes="{
           ...sharedButtonAttributes,
-          color: 'green'
+          color: 'green',
+          alt: 'Start'
         }"
         @click="status = statusEnum.STARTED"
       >
@@ -13,7 +14,11 @@
       </tooltip-button>
       <tooltip-button
         v-if="status === statusEnum.PAUSED"
-        :buttonAttributes="{ ...sharedButtonAttributes, color: 'red' }"
+        :buttonAttributes="{
+          ...sharedButtonAttributes,
+          color: 'red',
+          alt: 'Stop'
+        }"
         @click="stopTimebox"
       >
         <v-icon>mdi-stop</v-icon>
@@ -24,7 +29,8 @@
       <tooltip-button
         :buttonAttributes="{
           ...sharedButtonAttributes,
-          color: 'yellow'
+          color: 'yellow',
+          alt: 'Pause'
         }"
         @click="status = statusEnum.PAUSED"
       >
@@ -32,7 +38,11 @@
         <template #tooltip>Pause timer</template>
       </tooltip-button>
       <tooltip-button
-        :buttonAttributes="{ ...sharedButtonAttributes, color: 'red' }"
+        :buttonAttributes="{
+          ...sharedButtonAttributes,
+          color: 'red',
+          alt: 'Stop'
+        }"
         @click="stopTimebox"
       >
         <v-icon>mdi-stop</v-icon>
@@ -44,7 +54,8 @@
         :buttonAttributes="{
           ...sharedButtonAttributes,
           color: 'red',
-          outlined: true
+          outlined: true,
+          alt: 'Stop Alarm'
         }"
         @click="audioObject.pause()"
       >
@@ -74,7 +85,7 @@ export default {
   },
   methods: {
     stopTimebox() {
-      if (!!this.audioObject.currentSrc) {
+      if (this.audioObject && !!this.audioObject.currentSrc) {
         this.audioObject.pause();
       }
       this.status = statusEnum.STOPPED;

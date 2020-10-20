@@ -217,18 +217,23 @@ describe("timebox/actions", () => {
         timeboxList: [{ id: 25, title: "Title 1" }]
       };
       let commitMock = jest.fn();
-      actions.updateTimebox({
-        rootState: {
-          savedTimeboxes: {
-            currentTimeboxListName: ""
-          }
+      actions.updateTimebox(
+        {
+          rootState: {
+            savedTimeboxes: {
+              currentTimeboxListName: ""
+            }
+          },
+          state,
+          getters,
+          commit: commitMock
         },
-        state,
-        getters,
-        commit: commitMock
-      }, { id: 25, title: "Title 2" });
+        { id: 25, title: "Title 2" }
+      );
       expect(commitMock.mock.calls[0][0]).toBe("UPDATE_TIMEBOX");
-      expect(commitMock.mock.calls[1][0]).toBe("savedTimeboxes/UPDATE_TIMEBOX_LIST");
+      expect(commitMock.mock.calls[1][0]).toBe(
+        "savedTimeboxes/UPDATE_TIMEBOX_LIST"
+      );
     });
   });
 
@@ -300,6 +305,7 @@ describe("timebox/actions", () => {
 
   describe("deleteTimebox", () => {
     let store;
+    let UPDATE_TIMEBOX_LIST = jest.fn();
     beforeEach(() => {
       vuexStore.state = {
         timeboxList: [
@@ -308,6 +314,17 @@ describe("timebox/actions", () => {
           { id: 5, title: "Title 0" }
         ],
         currentTimeboxId: 30
+      };
+      vuexStore.modules = {
+        savedTimeboxes: {
+          namespaced: true,
+          state: {
+            currentTimeboxListName: "name"
+          },
+          mutations: {
+            UPDATE_TIMEBOX_LIST
+          }
+        }
       };
       store = new Vuex.Store(vuexStore);
     });
