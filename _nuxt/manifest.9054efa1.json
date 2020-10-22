@@ -1,7 +1,7 @@
 {
   "name": "timebox",
   "short_name": "timebox",
-  "description": "## Build Setup",
+  "description": "[Use the web app here](https://tchin25.github.io/timebox/)",
   "icons": [],
   "start_url": "/timebox/?standalone=true",
   "display": "standalone",
