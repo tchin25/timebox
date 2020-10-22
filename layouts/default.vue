@@ -53,7 +53,12 @@
 
         <v-card-actions class="py-2">
           A side project by
-          <a href="https://thomasch.in/" class="ml-1">
+          <a
+            href="https://thomasch.in/"
+            class="ml-1"
+            target="_blank"
+            rel="noreferrer"
+          >
             Thomas Chin
           </a>
           —
@@ -64,6 +69,8 @@
             icon
             small
             href="https://github.com/tchin25/timebox"
+            target="_blank"
+            rel="noreferrer"
           >
             <v-icon class="mb-1" large>
               mdi-github
