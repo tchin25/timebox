@@ -1,6 +1,6 @@
 import { createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import { getters, mutations } from "../../store/savedTimeboxes";
+import { getters, mutations } from "~/store/savedTimeboxes";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

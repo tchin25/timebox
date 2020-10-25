@@ -1,6 +1,6 @@
 import { createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import { getters, mutations, actions } from "../../store/timebox";
+import { getters, mutations, actions } from "~/store/timebox";
 import { statusEnum } from "~/assets/enums";
 
 const localVue = createLocalVue();

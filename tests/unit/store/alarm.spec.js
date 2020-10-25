@@ -1,6 +1,6 @@
 import { createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import { mutations, actions } from "../../store/alarm";
+import { mutations, actions } from "~/store/alarm";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

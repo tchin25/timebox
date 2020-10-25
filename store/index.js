@@ -2,6 +2,8 @@ import { statusEnum } from "../assets/enums";
 
 // Hardcode database version so we can check vuex-persist if they are using an old version
 const DATABASE_VERSION = "1.0.0";
+
+/* istanbul ignore next */
 export const state = () => ({
   databaseVersion: DATABASE_VERSION
 });

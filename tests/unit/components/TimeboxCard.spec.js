@@ -5,7 +5,7 @@ Vue.use(Vuetify);
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
-import { state, getters, mutations, actions } from "../../store/timebox";
+import { state, getters, mutations, actions } from "~/store/timebox";
 import { completionEnum, statusEnum } from "~/assets/enums";
 import TimeboxCard from "~/components/TimeboxCard";
 
