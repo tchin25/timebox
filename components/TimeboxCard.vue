@@ -8,7 +8,19 @@
   >
     <div class="timebox-background" :style="backgroundHeight"></div>
     <div class="handle">
-      <v-icon>mdi-drag</v-icon>
+      <v-tooltip :disabled="isDragging" bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            v-bind="attrs"
+            v-on="on"
+            @mousedown="isDragging = true"
+            @mouseleave="isDragging = false"
+          >
+            mdi-drag</v-icon
+          >
+        </template>
+        <span>Drag to reorder</span>
+      </v-tooltip>
     </div>
     <v-form ref="form" @submit.prevent="saveTimebox" lazy-validation>
       <v-card-title>
@@ -104,6 +116,7 @@ export default {
         title: this.title,
         duration: this.duration
       },
+      isDragging: false,
       completionEnum,
       statusEnum
     };
