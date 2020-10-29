@@ -57,7 +57,7 @@
           outlined: true,
           alt: 'Stop Alarm'
         }"
-        @click="audioObject.pause()"
+        @click="audioObject ? audioObject.pause() : null"
       >
         <v-icon>mdi-bell-off-outline</v-icon>
         <template #tooltip>Stop alarm</template>

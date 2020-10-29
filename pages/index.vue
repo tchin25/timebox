@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <p class="text-h3">
+    <p class="text-h3" v-if="!currentTimeboxListName">
       Simple Timeboxer
     </p>
     <client-only placeholder="Loading...">

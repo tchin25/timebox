@@ -163,7 +163,6 @@ export default {
   position: absolute;
   top: 5px;
   left: 5px;
-  z-index: 1000;
   width: 300px;
   transition: all 0.5s;
 }

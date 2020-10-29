@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto sidebar-wrapper">
+  <v-card flat class="mx-auto sidebar-wrapper">
     <v-list dense>
       <v-list-item>
         <v-list-item-content>
@@ -9,36 +9,46 @@
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
-        <v-list-item-action>
-          <v-switch v-model="repeat"></v-switch>
-        </v-list-item-action>
         <v-list-item-content>
           Repeat
         </v-list-item-content>
+        <v-list-item-action>
+          <v-switch v-model="repeat"></v-switch>
+        </v-list-item-action>
       </v-list-item>
       <v-list-item>
-        <v-list-item-action>
-          <v-switch v-model="mute"></v-switch>
-        </v-list-item-action>
         <v-list-item-content>
           Mute
         </v-list-item-content>
+        <v-list-item-action>
+          <v-switch v-model="mute"></v-switch>
+        </v-list-item-action>
       </v-list-item>
       <v-list-item>
-        <v-list-item-action>
-          <v-switch v-model="useCustomAudio"></v-switch>
-        </v-list-item-action>
         <v-list-item-content>
           Use Custom Alarm
         </v-list-item-content>
+        <v-list-item-action>
+          <v-switch v-model="useCustomAudio"></v-switch>
+        </v-list-item-action>
       </v-list-item>
-      <div v-if="useCustomAudio">
+      <template v-if="useCustomAudio">
         <v-list-item>
           <v-list-item-content>
             <alarm-audio-input></alarm-audio-input>
           </v-list-item-content>
         </v-list-item>
-      </div>
+      </template>
+      <v-list-item>
+        <v-list-item-content>
+          Test Audio
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-btn x-small outlined dense dark color="green" @click="playSound"
+            ><v-icon>mdi-play</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
       <!-- <v-list-item>
           <v-list-item-action>
             <v-switch></v-switch>
@@ -52,12 +62,15 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import AlarmAudioInput from "./AlarmAudioInput";
 
 export default {
   components: {
     AlarmAudioInput
+  },
+  methods: {
+    ...mapActions("alarm", ["playSound"])
   },
   computed: {
     repeat: {
@@ -84,6 +97,7 @@ export default {
         this.$store.commit("alarm/SET_USE_CUSTOM_AUDIO", value);
       }
     },
+    ...mapState("alarm", ["isPlaying"])
   }
 };
 </script>
@@ -93,6 +107,5 @@ export default {
   position: absolute;
   top: 5px;
   right: 5px;
-  z-index: 1000;
 }
 </style>
