@@ -126,6 +126,9 @@ export default {
   },
   methods: {
     saveTimebox() {
+      if(!this.$refs.form.validate()){
+        return;
+      }
       let timebox = {
         id: this.id,
         ...this.form
