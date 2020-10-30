@@ -36,6 +36,9 @@ export const mutations = {
   SET_REPEAT(state, bool) {
     state.repeat = !!bool;
   },
+  SET_PAUSE_BETWEEN_TIMEBOXES(state, bool) {
+    state.pauseBetweenTimeboxes = !!bool;
+  },
   SET_STATUS(state, status) {
     switch (status) {
       case statusEnum.STARTED:
@@ -101,6 +104,9 @@ export const actions = {
       }, 50);
     } else {
       commit("_NEXT_TIMEBOX", index);
+    }
+    if (state.pauseBetweenTimeboxes){
+      commit("SET_STATUS", statusEnum.PAUSED);
     }
     dispatch("alarm/playSound", null, { root: true });
   },

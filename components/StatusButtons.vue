@@ -7,7 +7,7 @@
           color: 'green',
           alt: 'Start'
         }"
-        @click="status = statusEnum.STARTED"
+        @click="switchStatus(statusEnum.STARTED)"
       >
         <v-icon>mdi-play</v-icon>
         <template #tooltip>Start timer</template>
@@ -19,7 +19,7 @@
           color: 'red',
           alt: 'Stop'
         }"
-        @click="stopTimebox"
+        @click="switchStatus(statusEnum.STOPPED)"
       >
         <v-icon>mdi-stop</v-icon>
         <template #tooltip>Stop timer</template>
@@ -32,7 +32,7 @@
           color: 'yellow',
           alt: 'Pause'
         }"
-        @click="status = statusEnum.PAUSED"
+        @click="switchStatus(statusEnum.PAUSED)"
       >
         <v-icon>mdi-pause</v-icon>
         <template #tooltip>Pause timer</template>
@@ -43,13 +43,13 @@
           color: 'red',
           alt: 'Stop'
         }"
-        @click="stopTimebox"
+        @click="switchStatus(statusEnum.STOPPED)"
       >
         <v-icon>mdi-stop</v-icon>
         <template #tooltip>Stop timer</template>
       </tooltip-button>
     </template>
-    <template v-if="useCustomAudio && isPlaying">
+    <template v-if="isPlaying">
       <tooltip-button
         :buttonAttributes="{
           ...sharedButtonAttributes,
@@ -57,7 +57,7 @@
           outlined: true,
           alt: 'Stop Alarm'
         }"
-        @click="audioObject ? audioObject.pause() : null"
+        @click="pauseAudio"
       >
         <v-icon>mdi-bell-off-outline</v-icon>
         <template #tooltip>Stop alarm</template>
@@ -84,11 +84,14 @@ export default {
     };
   },
   methods: {
-    stopTimebox() {
-      if (this.audioObject && !!this.audioObject.currentSrc) {
+    switchStatus(status) {
+      this.pauseAudio();
+      this.status = status;
+    },
+    pauseAudio() {
+      if (this.audioObject && this.isPlaying) {
         this.audioObject.pause();
       }
-      this.status = statusEnum.STOPPED;
     }
   },
   computed: {

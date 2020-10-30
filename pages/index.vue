@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <p class="text-h3" v-if="!currentTimeboxListName">
-      Simple Timeboxer
-    </p>
     <client-only placeholder="Loading...">
+      <p class="text-h3" v-if="!currentTimeboxListName">
+        Simple Timeboxer
+      </p>
       <div v-if="!$vuetify.breakpoint.mdAndUp">
         Sorry! This app doesn't work on mobile.
       </div>

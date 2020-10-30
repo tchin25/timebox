@@ -26,6 +26,14 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
+          Pause Between Timeboxes
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-switch v-model="pauseBetweenTimeboxes"></v-switch>
+        </v-list-item-action>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
           Use Custom Alarm
         </v-list-item-content>
         <v-list-item-action>
@@ -95,6 +103,14 @@ export default {
       },
       set(value) {
         this.$store.commit("alarm/SET_USE_CUSTOM_AUDIO", value);
+      }
+    },
+    pauseBetweenTimeboxes: {
+      get() {
+        return this.$store.state.timebox.pauseBetweenTimeboxes;
+      },
+      set(value) {
+        this.$store.commit("timebox/SET_PAUSE_BETWEEN_TIMEBOXES", value);
       }
     },
     ...mapState("alarm", ["isPlaying"])
