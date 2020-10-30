@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 Vue.use(Vuetify);
 
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { createLocalVue, mount, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import { state, getters, mutations, actions } from "~/store/timebox";
@@ -51,7 +51,7 @@ describe("TimeboxCard.vue", () => {
     localVue.use(Vuex);
     const store = new Vuex.Store(generateStore());
 
-    const wrapper = shallowMount(TimeboxCard, {
+    const wrapper = mount(TimeboxCard, {
       propsData: {
         id: 0,
         title: "Test Title",

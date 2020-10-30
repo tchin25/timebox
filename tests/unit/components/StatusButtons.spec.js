@@ -84,8 +84,9 @@ describe("StatusButtons.vue", () => {
     );
   });
 
-  test("stopTimebox() Method", () => {
+  test("switchStatus() Method", () => {
     store.modules.timebox.state.status = statusEnum.STARTED;
+    store.modules.alarm.state.isPlaying = true;
     let setStatusSpy = jest.spyOn(
       store.modules.timebox.mutations,
       "SET_STATUS"
@@ -97,7 +98,7 @@ describe("StatusButtons.vue", () => {
     let wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });
-    wrapper.vm.stopTimebox();
+    wrapper.vm.switchStatus();
     expect(setStatusSpy).toHaveBeenCalled();
     expect(audioPauseSpy).toHaveBeenCalled();
 
@@ -107,7 +108,7 @@ describe("StatusButtons.vue", () => {
     wrapper = mount(StatusButtons, {
       store: new Vuex.Store(store)
     });
-    wrapper.vm.stopTimebox();
+    wrapper.vm.switchStatus();
     expect(setStatusSpy).toHaveBeenCalled();
     expect(audioPauseSpy).not.toHaveBeenCalled();
   });

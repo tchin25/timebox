@@ -58,6 +58,11 @@ describe("alarm/mutations", () => {
 });
 describe("alarm/actions", () => {
   describe("setAlarmAudio", () => {
+    const rootState = {
+      timebox: {
+        pauseBetweenTimeboxes: false
+      }
+    };
     const state = {
       audioObject: null
     };
@@ -72,7 +77,7 @@ describe("alarm/actions", () => {
     let audioOnEndSpy;
 
     test("Sets audioObject and its event listeners", () => {
-      actions.setAlarmAudio({ state, commit });
+      actions.setAlarmAudio({ rootState, state, commit });
       expect(commit.mock.calls[0][0]).toBe("SET_ALARM_AUDIO");
       expect(state.audioObject).toBeDefined();
       expect(state.audioObject.onplay).toBeDefined();
@@ -120,7 +125,8 @@ describe("alarm/actions", () => {
     });
 
     test("Plays default audio", () => {
-      actions.playSound({ state });
+      state.audioObject = new Audio();
+      actions.playSound({ state, dispatch: dispatchMock });
       expect(audioPlaySpy).toHaveBeenCalled();
     });
 

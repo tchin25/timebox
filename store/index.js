@@ -30,7 +30,7 @@ export const defaultState = () => ({
     currentTimeboxId: -1,
     status: statusEnum.STOPPED,
     repeat: true,
-    pauseBetweenTimeboxes: true,
+    pauseBetweenTimeboxes: false,
     remainingTime: 0,
     timeboxList: [],
     toAddId: 4 // Increment every time a timebox is added to prevent id collision
