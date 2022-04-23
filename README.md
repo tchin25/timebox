@@ -2,7 +2,7 @@
 
 [Use the web app here](https://tchin25.github.io/timebox/)
 
-[Read the blog post about it here](https://thomasch.in/blog/timeboxer/)
+[Read the blog post about it here](https://barelylingual.net/posts/timeboxer)
 
 
 ## Build Setup
