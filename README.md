@@ -1,4 +1,5 @@
 # timebox
+> ## Note: Due to browsers' tendency to suspend inactive tabs, you cannot put the web app in a background tab for the timer to run correctly.
 
 [Use the web app here](https://tchin25.github.io/timebox/)
 
